@@ -1,1 +1,1 @@
-A command is concievbly excuteable by itself (unless a required option is specifed)
+CLI Generation library. Supports option autocompletion and more.
