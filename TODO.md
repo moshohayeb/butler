@@ -31,8 +31,6 @@ the ability to dig deeper in the tree (as an option 'traversable')
     * No option with spaces
 
 
-
-
 pipe cmds options
 
 
@@ -43,5 +41,17 @@ Group X
 
 
 
+Arguments matching and validation (match: XxXx --- has to be good .. think thoroghly)
+Error reporting
 Replace colors with chalk
 Rewrite Readline
+
+
+--------------
+
+
+* stdout MUST be a tty
+* Strip io shenanings ()
+* stdin.setRawMode(true) for stdin
+    http://stackoverflow.com/questions/5006821/nodejs-how-to-read-keystrokes-from-stdin
+*

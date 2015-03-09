@@ -1,5 +1,5 @@
-var maiden = require('./lib/maiden')
+var maid = require('./lib/maid')
   , schema = require('./example')
-  , cli = maiden.Maiden(schema);
+  , cli = maid(schema);
 
 cli.start();
