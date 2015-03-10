@@ -1,5 +1,5 @@
-var maid = require('./lib/maid')
+var butler = require('./lib/butler')
   , schema = require('./example')
-  , cli = maid(schema);
+  , cli = butler(schema);
 
 cli.start();
