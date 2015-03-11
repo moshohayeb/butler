@@ -1,4 +1,4 @@
-What is the difference between a command (or hence subcommands) and options.
+GWhat is the difference between a command (or hence subcommands) and options.
 what seperates the two?
 
 options
