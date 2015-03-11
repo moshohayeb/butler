@@ -55,3 +55,17 @@ Rewrite Readline
 * stdin.setRawMode(true) for stdin
     http://stackoverflow.com/questions/5006821/nodejs-how-to-read-keystrokes-from-stdin
 *
+
+
+
+
+
+
+
+
+
+
+
+
+
+Components parsers returing true/false and the ability to retrieve the error msg
