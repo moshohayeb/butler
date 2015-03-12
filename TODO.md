@@ -69,3 +69,6 @@ Rewrite Readline
 
 
 Components parsers returing true/false and the ability to retrieve the error msg
+
+
+Invalid CHOICE (in data validation)
