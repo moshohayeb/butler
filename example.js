@@ -10,6 +10,7 @@ module.exports = {
                     options: [
                         {
                             name:  'name',
+                            required: true,
                             help:  'interface name',
                             match: function () {
                                 return ['1/1', '1/2', '1/3'];
@@ -66,6 +67,16 @@ module.exports = {
                             bool: true,
                         },
                         {
+                            name:     'color',
+                            help:     'set list of colors',
+                            required: true,
+                            multiple: true,
+                            group: 'google',
+                            match:    function () {
+                                return ['qwr', 'red', 'blue', 'green', 'cyan', 'magenta']
+                            }
+                        },
+                        {
                             name:  'type',
                             help:  'the type of the machine',
                             match: function () { return ['router', 'switch', 'bridge'] },
@@ -75,13 +86,15 @@ module.exports = {
                             name:  'model',
                             help:  'the model of the machine',
                             match: function () { return ['Cisco', 'Juniper', 'Hwuwai'] },
-                            group: 'google'
+                            group: 'google',
+                            required: true
                         },
                         {
                             name: 'game',
                             help: 'favorite game',
                             bool: true,
-                            group: 'mansion'
+                            group: 'mansion',
+                            required: true
                         },
                         {
                             name: 'rest_time',
@@ -90,7 +103,15 @@ module.exports = {
                                 return ['12AM', '6PM', '10PM']
                             },
                             group: 'mansion'
-                        }
+                        },
+                        {
+                            name:  'name',
+                            required: true,
+                            help:  'interface name',
+                            match: function () {
+                                return ['1/1', '1/2', '1/3'];
+                            }
+                        },
 
 
                     ]
@@ -108,6 +129,7 @@ module.exports = {
                         {
                             name:  'ip',
                             help:  'the ip to clear',
+                            required: true,
                             match: function () {
                                 return ['all'];
                             }
