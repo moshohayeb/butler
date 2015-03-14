@@ -5,6 +5,9 @@ module.exports = {
             help:     'show system information',
             commands: [
                 {
+                    run: function(data) {
+                        console.log('Running with data: ', data);
+                    },
                     name:    'interface',
                     help:    'show information about available interfaces',
                     options: [
