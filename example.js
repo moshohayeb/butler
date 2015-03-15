@@ -62,6 +62,8 @@ module.exports = {
                 },
                 {
                     name:    'ntp',
+                    run: function(ctx) {
+                        console.log('text');},
                     help:    'show information about ntp',
                     options: [
                         {
