@@ -63,3 +63,11 @@ make sure store is sane
 executing the callable with the provided data
 matching + regex, arrays object (take keys as keys and value as help if string) as well as functions
 make wf switch cli tree (as example2.js)
+
+
+
+
+
+
+
+instance variable of just a string? HOW?
