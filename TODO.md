@@ -71,3 +71,11 @@ make wf switch cli tree (as example2.js)
 
 
 instance variable of just a string? HOW?
+use supports-color to detect colors
+
+
+
+
+
+
+User defined inside the completion entry, put anything we like, js object, regex...etc

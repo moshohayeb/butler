@@ -32,6 +32,12 @@ module.exports = {
                             bool: true
                         },
                         {
+                            name: 'zipcode',
+                            help: 'what is the postal code',
+                            match: /\d+/
+
+                        },
+                        {
                             name:  'route',
                             help:  'show interface route table',
                             match: function () {
@@ -58,7 +64,6 @@ module.exports = {
                 {
                     name: 'hashblock',
                     help: 'show hashblock configuration',
-                    meta: ['pipeable']
                 },
                 {
                     name:    'ntp',
