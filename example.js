@@ -34,8 +34,12 @@ module.exports = {
                         {
                             name: 'zipcode',
                             help: 'what is the postal code',
-                            match: /\d+/
+                            match: /^\d+$/
 
+                        },
+                        {
+                            name: 'address',
+                            help: 'what is the postal code',
                         },
                         {
                             name:  'route',
@@ -162,6 +166,13 @@ module.exports = {
         {
             name: 'reboot',
             help: 'reboot machine',
+        },
+        {
+            name: 'exit',
+            help: 'exit from cli session',
+            run: function() {
+                process.exit(0);
+            }
         },
     ],
 
