@@ -7,7 +7,6 @@ the ability to dig deeper in the tree (as an option 'traversable')
 --------------
 
 
-- default -- show in help if not given
 if complete list is not an array convert it to one (key => name, value => help if string)
 Replace colors with chalk
 TESTS TESTS TESTS
