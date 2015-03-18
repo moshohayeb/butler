@@ -179,7 +179,7 @@ module.exports = {
     ],
 
     possibleMsgr: 'Possible completions:',
-    welcomeMsg:  'Welcome to WireFilter CLI',
+    welcomeMsg:  'Welcome to CLI',
     prompt:      'vThunder(NOLICENSE)>'
 };
 

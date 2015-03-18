@@ -7,7 +7,8 @@ the ability to dig deeper in the tree (as an option 'traversable')
 --------------
 
 
-if complete list is not an array convert it to one (key => name, value => help if string)
+# match should accept array/object
+1 Extra argument (called argument). The last ARGUMENT
 Replace colors with chalk
 TESTS TESTS TESTS
 Modify readline.js to fit our needs (READ AND UNDERSTAND THE CODE)
