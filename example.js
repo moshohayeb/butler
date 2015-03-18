@@ -22,6 +22,7 @@ module.exports = {
                         {
                             name:  'location',
                             help:  'interface location',
+                            default: 'chassis_1',
                             match: function () {
                                 return ['chassis_1', 'chassis_2', 'crap_2'];
                             }
@@ -34,12 +35,13 @@ module.exports = {
                         {
                             name: 'zipcode',
                             help: 'what is the postal code',
+                            default: '12413',
                             match: /^\d+$/
 
                         },
                         {
                             name: 'address',
-                            help: 'what is the postal code',
+                            help: 'address of the customer',
                         },
                         {
                             name:  'route',
