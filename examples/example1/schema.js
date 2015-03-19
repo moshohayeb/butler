@@ -11,10 +11,17 @@ var commands = require('./commands')
 //  group: name (when one of multiple options has to be specified only)
 //
 
+
+// possibleMsg
+// prompt
+// motd (callable)
+
 module.exports = {
-  welcomeMsg: 'Welcome to WireFilter CLI',
   possibleMsgs: 'Possible Completions:',
   prompt: '<WIREFILTER-SWITCH>',
+  motd: function(printer) {
+    printer('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
+  },
 
 
   commands: [
