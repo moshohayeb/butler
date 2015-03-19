@@ -7,6 +7,7 @@ the ability to dig deeper in the tree (as an option 'traversable')
 --------------
 
 
+# TEST Primary with different types
 # match should accept array/object
 1 Extra argument (called argument). The last ARGUMENT
 Replace colors with chalk
@@ -17,6 +18,7 @@ Make wf switch cli tree (as example2.js)
 pipe cmds options
 schema validator
 
+BETTER support for primary option options variables (if there is a list print it instead of <value>)
 
 
 - Other Option types
