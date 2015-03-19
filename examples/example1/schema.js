@@ -1,4 +1,5 @@
-var commands = require('./commands')
+var commands = require('./command')
+var matches =  require('./match')
 
 // Available Option Modifiers
 //  required: [true, false]
@@ -31,19 +32,84 @@ module.exports = {
       commands: [
         {
           name: 'arp',
-          help: 'clear address-resolution information'
+          help: 'clear address-resolution information',
+          run: commands.clear.arp
         },
         {
           name: 'terminal',
-          help: 'clear the terminal screen'
+          help: 'clear the terminal screen',
+          run: commands.clear.terminal
         }
       ]
     },
 
     {
+      name: 'show',
+      help: 'show system information',
+      commands: [
+        {
+          name: 'arp',
+          help: 'show system address resolution protocol table entries',
+          run: commands.show.arp
+        },
+        {
+          name: 'configuration',
+          help: 'show system configuration',
+          run: commands.show.configuration
+        },
+        {
+          name: 'date',
+          help: 'show system date',
+          run: commands.show.date
+        },
+        {
+          name: 'interface',
+          help: 'show information about available interfaces',
+          run: commands.show.interface,
+          options: [
+            {
+              name: 'interface',
+              help: 'enter interface name',
+              match: matches.interfaces,
+              required: true,
+              primary: true
+            },
+            {
+              name: 'brief',
+              help: 'show minimum information',
+              bool: true
+            },
+
+          ]
+        },
+        {
+          name: 'ntp',
+          help: 'show ntp status',
+          run: commands.show.ntp
+        },
+        {
+          name: 'uptime',
+          help: 'show system uptime',
+          run: commands.show.uptime
+        },
+        {
+          name: 'version',
+          help: 'show cli version',
+          run: commands.show.version
+        },
+      ]
+    },
+
+
+    {
       name: 'exit',
       help: 'exit from cli session',
       run: commands.exit
+    },
+    {
+      name: 'reboot',
+      help: 'reboot machine',
+      run: commands.reboot
     },
 
     {
