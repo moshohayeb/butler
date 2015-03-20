@@ -7,6 +7,7 @@ the ability to dig deeper in the tree (as an option 'traversable')
 --------------
 
 
+# if matches take an argument, then use that to validate the input
 # TEST Primary with different types
 # match should accept array/object
 1 Extra argument (called argument). The last ARGUMENT

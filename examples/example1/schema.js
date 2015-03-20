@@ -77,7 +77,7 @@ module.exports = {
             {
               name: 'brief',
               help: 'show minimum information',
-              bool: true
+              bool: true,
             },
 
           ]
