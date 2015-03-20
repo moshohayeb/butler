@@ -18,7 +18,7 @@ module.exports = {
     configuration: function () { console.log('Showing configuration'); },
     date:          function () { console.log('Showing date'); },
     interface:     function (ctx) {
-      console.log('Showing interface %s (%s)', ctx['interface'], ctx['brief']);
+      console.log('Showing interface %s (%s)', ctx['name'], ctx['brief']);
     },
     ntp:           function () { console.log('Showing ntp'); },
     uptime:        function () { console.log('Showing uptime'); },

@@ -68,7 +68,7 @@ module.exports = {
           run: commands.show.interface,
           options: [
             {
-              name: 'interface',
+              name: 'name',
               help: 'enter interface name',
               match: matches.interfaces,
               required: true,
