@@ -132,13 +132,5 @@ module.exports = {
       ],
       run: commands.ping
     },
-
-
-
-
-
-
-
   ]
-
 }

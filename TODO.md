@@ -8,6 +8,7 @@ the ability to dig deeper in the tree (as an option 'traversable')
 
 
 TESTS TESTS TESTS
+config is a a file and schema (commands) is another file
 # Revise code and refactor
 # if matches take an argument, then use that to validate the input
 # TEST Primary with different types
