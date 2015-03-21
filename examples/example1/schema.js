@@ -1,5 +1,5 @@
 var commands = require('./command')
-var matches =  require('./match')
+var matches = require('./match')
 
 // Available Option Modifiers
 //  required: [true, false]
@@ -19,60 +19,60 @@ var matches =  require('./match')
 
 module.exports = {
   possibleMsgs: 'Possible Completions:',
-  prompt: '<WIREFILTER-SWITCH>',
-  motd: function(printer) {
+  prompt:       '<WIREFILTER-SWITCH>',
+  motd:         function (printer) {
     printer('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
   },
 
 
   commands: [
     {
-      name: 'clear',
-      help: 'clear cached data in the machine',
+      name:     'clear',
+      help:     'clear cached data in the machine',
       commands: [
         {
           name: 'arp',
           help: 'clear address-resolution information',
-          run: commands.clear.arp
+          run:  commands.clear.arp
         },
         {
           name: 'terminal',
           help: 'clear the terminal screen',
-          run: commands.clear.terminal
+          run:  commands.clear.terminal
         }
       ]
     },
 
     {
-      name: 'show',
-      help: 'show system information',
+      name:     'show',
+      help:     'show system information',
       commands: [
         {
           name: 'arp',
           help: 'show system address resolution protocol table entries',
-          run: commands.show.arp
+          run:  commands.show.arp
         },
         {
           name: 'configuration',
           help: 'show system configuration',
-          run: commands.show.configuration
+          run:  commands.show.configuration
         },
         {
           name: 'date',
           help: 'show system date',
-          run: commands.show.date
+          run:  commands.show.date
         },
         {
-          name: 'interface',
-          help: 'show information about available interfaces',
-          run: commands.show.interface,
+          name:    'interface',
+          help:    'show information about available interfaces',
+          run:     commands.show.interface,
           options: [
             {
-              name: 'name',
-              help: 'enter interface name',
-              match: matches.interfaces,
+              name:     'name',
+              help:     'enter interface name',
+              match:    matches.interfaces,
               required: true,
-              primary: true
+              primary:  true
             },
             {
               name: 'brief',
@@ -85,17 +85,17 @@ module.exports = {
         {
           name: 'ntp',
           help: 'show ntp status',
-          run: commands.show.ntp
+          run:  commands.show.ntp
         },
         {
           name: 'uptime',
           help: 'show system uptime',
-          run: commands.show.uptime
+          run:  commands.show.uptime
         },
         {
           name: 'version',
           help: 'show cli version',
-          run: commands.show.version
+          run:  commands.show.version
         },
       ]
     },
@@ -104,33 +104,33 @@ module.exports = {
     {
       name: 'exit',
       help: 'exit from cli session',
-      run: commands.exit
+      run:  commands.exit
     },
     {
       name: 'reboot',
       help: 'reboot machine',
-      run: commands.reboot
+      run:  commands.reboot
     },
 
     {
-      name: 'ping',
-      help: 'send ICMP echo messages',
-      meta: ['pipeable'],
+      name:    'ping',
+      help:    'send ICMP echo messages',
+      meta:    ['pipeable'],
       options: [
         {
-          name: 'host',
-          help: 'host ip address or domain',
-          primary: true,
+          name:     'host',
+          help:     'host ip address or domain',
+          primary:  true,
           required: true,
           //match: function() {return [1,2,3]}
-          match: /^\d+$/
+          match:    /^\d+$/
         },
         {
           name: 'ttl',
           help: 'time to live'
         }
       ],
-      run: commands.ping
+      run:     commands.ping
     },
   ]
 }
