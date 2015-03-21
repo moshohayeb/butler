@@ -7,6 +7,7 @@ the ability to dig deeper in the tree (as an option 'traversable')
 --------------
 
 
+if NOT pipeable then DONT allow piping
 TESTS TESTS TESTS
 config is a a file and schema (commands) is another file
 # Revise code and refactor
