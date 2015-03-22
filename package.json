@@ -8,7 +8,9 @@
     "keypress": "^0.2.1",
     "lodash": "^3.3.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^2.1.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

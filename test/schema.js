@@ -10,17 +10,17 @@ module.exports = {
   commands: [
 
     {
-      name:     'clear',
-      help:     'clear cached data in the machine',
+      name:     'purge',
+      help:     'purge cached data in the machine',
       commands: [
         {
-          name: 'arp',
-          help: 'clear address-resolution information',
+          name: 'mac-address-table',
+          help: 'flush mac-address-resolution information',
           run:  dummy
         },
         {
-          name: 'terminal',
-          help: 'clear the terminal screen',
+          name: 'log',
+          help: 'remove access log files',
           run:  dummy
         }
       ]
@@ -31,17 +31,13 @@ module.exports = {
       help:     'show system information',
       commands: [
         {
-          name: 'ip'
-        }
-        ,
-        {
           name: 'mac-address-table',
-          help: 'show MAC address table',
+          help: 'show mac address table',
           run:  dummy
         },
         {
-          name: 'configuration',
-          help: 'show system configuration',
+          name: 'hardware',
+          help: 'show system hardware information',
           run:  dummy
         },
         {
@@ -50,15 +46,16 @@ module.exports = {
           run:  dummy
         },
         {
-          name:    'interface',
-          help:    'show information about available interfaces',
+          name:    'ip',
+          help:    'show ipv4 information',
           run:     dummy,
           options: [
             {
-              name:     'name',
-              help:     'enter interface name',
-              match:    function () { return [1, 2, 3, 4, 5]},
-              required: true,
+              name:     'interfaces',
+              help:     'interface name',
+              match:    function () { return [
+                'ethernet', 'loopback', 'management', 'trunk', 've'
+              ]},
               primary:  true
             },
             {
@@ -75,8 +72,8 @@ module.exports = {
           run:  dummy
         },
         {
-          name: 'uptime',
-          help: 'show system uptime',
+          name: 'log',
+          help: 'show system log',
           run:  dummy
         },
         {
@@ -119,6 +116,12 @@ module.exports = {
           default: 10
         }
       ]
+    },
+
+    {
+      name: 'ssh',
+      help: 'open an ssh connection',
+      run : dummy
     },
 
   ]

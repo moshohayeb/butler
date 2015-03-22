@@ -1,5 +1,5 @@
 var butler = require('../../lib/butler')
-  , schema = require('./schema')
+  , schema = require('../../test/schema')
   , cli    = butler(schema);
 
 cli.start();
