@@ -34,7 +34,7 @@ describe('@autocompletion', function () {
 
   function compareKeys(v) {
     if (_.isArray(v))
-      return _.all(v, function(fv) { compareKeys(fv) })
+      return _.all(v, function (fv) { compareKeys(fv) })
 
     if (!_.isObject(v))
       throw new Error('Return value of auto completion is not an object');
@@ -49,30 +49,45 @@ describe('@autocompletion', function () {
 
   afterEach(function () { compareKeys(rv) })
 
-  describe('@basic', function () {
-    var lines = [
-      '',
-      'show hardware ',
-      'show interface',
-      'some \tgarbage \bthat does\'t exist\r',
-      '!!',
-      '   ',
-      '<>',
-      '?',
-      1241251,
-      null,
-      1.34,
-      { exist: false },
-      []
-    ]
 
-    _.each(lines, function (line) {
-      it(util.format('should always return an array for value "%s"', line), function () {
-        rv = Line(line); rv.parse(); rv = rv.complete();
-        expect(rv).to.be.an('array');
-      }) // it
-    }) // each
-  }) // describe
+
+
+  describe('@basic', function () {
+    describe('@lineparsing', function () {
+      var lines = [
+        '',
+        'show hardware ',
+        'show interface',
+        'some \tgarbage \bthat does\'t exist\r',
+        '!!',
+        '   ',
+        '<>',
+        '?',
+        1241251,
+        null,
+        1.34,
+        { exist: false },
+        []
+      ]
+
+      _.each(lines, function (line) {
+        it(util.format('should always return an array for value "%s"', line), function () {
+          rv = Line(line);
+          rv.parse();
+          rv = rv.complete();
+          expect(rv).to.be.an('array');
+        }) // it
+      }) // each
+    }) // lineparsing
+  }) // basic
+
+
+
+
+
+
+
+
 
   describe('@emptyline', function () {
     before(function () {
