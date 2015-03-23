@@ -1,0 +1,6 @@
+--reporter spec
+--growl
+--ui bdd
+--recursive
+--throw-deprecation
+--watch

@@ -2,12 +2,42 @@ var dummy = function (context) { ; };
 
 module.exports = {
   possibleMsgs: 'Possible Completions:',
-  prompt:       '<WIREFILTER-SWITCH>',
+  prompt:       '<SPACE-X-CLI>',
   motd:         function (show) {
     show('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
   },
 
   commands: [
+
+    // couple of errornous/incomplete commands
+    {
+      Unused:         'useless value to me',
+      'space in key': 'should not affect the app',
+      name:           'backup',
+      help:           'backup system files',
+      run:            'invalid'
+    },
+
+    {
+      // this commmand should be ignored
+      // because it has no name
+      noname: 'this command has no name',
+      help: 'so it should not be treated as such',
+      'run': {} // invalid run context
+    },
+
+    {
+      // command with name only
+      // should be fine
+      name: 'health-stat',
+      // meta can be a single string or an array of strings
+      meta: 'pipeable'
+    },
+
+    {
+      name: 'traceroute',
+      help: {'help cant be an object': 1}
+    },
 
     {
       name:     'purge',
@@ -38,7 +68,49 @@ module.exports = {
         {
           name: 'hardware',
           help: 'show system hardware information',
-          run:  dummy
+          commands: [
+            {
+              name: 'hard-drive',
+              help: 'show info about the state of HD',
+              commands: [
+                {
+                  name: 'fan',
+                  help: 'show hard drive fan parameters',
+                  meta: 'pipeable'
+                },
+                {
+                  name: 'controller',
+                  help: 'show hard drive controller parameters'
+                },
+                {
+                  name: 'errors',
+                  help: 'show hard drive errors'
+                },
+                { },
+                { },
+                { name: {anObject: ' measurements '}},
+                { name: null},
+                { name: 'pager' },
+              ],
+              options: [
+                {
+                  name: 'OPT1',
+                  help: 'gonna get ignored because commands are present'
+                }
+              ]
+            },
+            {
+              name: 'network-card',
+              help: 'show info of network card'
+            },
+            {
+              name: 'cpu'
+            },
+            {
+              ignore_me_please: 213,
+              because_i_dont_have_a_name: 'LOL'
+            }
+          ]
         },
         {
           name: 'clock',
@@ -51,12 +123,14 @@ module.exports = {
           run:     dummy,
           options: [
             {
-              name:     'interfaces',
-              help:     'interface name',
-              match:    function () { return [
-                'ethernet', 'loopback', 'management', 'trunk', 've'
-              ]},
-              primary:  true
+              name:    'interfaces',
+              help:    'interface name',
+              match:   function () {
+                return [
+                  'ethernet', 'loopback', 'management', 'trunk', 've'
+                ]
+              },
+              primary: true
             },
             {
               name: 'brief',
@@ -121,7 +195,7 @@ module.exports = {
     {
       name: 'ssh',
       help: 'open an ssh connection',
-      run : dummy
+      run:  dummy
     },
 
   ]

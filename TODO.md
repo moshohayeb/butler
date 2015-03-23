@@ -15,6 +15,8 @@ config is a a file and schema (commands) is another file
 # if matches take an argument, then use that to validate the input
 # TEST Primary with different types
 # match should accept array/object
+# more if alot of commands
+# Show group in help option
 1 Extra argument (called argument). The last ARGUMENT
 Replace colors with chalk
 Modify readline.js to fit our needs (READ AND UNDERSTAND THE CODE)
