@@ -3,4 +3,3 @@
 --ui bdd
 --recursive
 --throw-deprecation
---watch

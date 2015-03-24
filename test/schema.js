@@ -36,7 +36,10 @@ module.exports = {
 
     {
       name: 'traceroute',
-      help: {'help cant be an object': 1}
+      help: {'help cant be an object': 1},
+      options: [
+
+      ]
     },
 
     {
@@ -158,7 +161,6 @@ module.exports = {
       ]
     },
 
-
     {
       name: 'exit',
       help: 'exit from cli session',
@@ -178,6 +180,11 @@ module.exports = {
       run:     dummy,
       options: [
         {
+          name: 'hiddenOpt',
+          help: 'hidden, doesn\'t matter',
+          hidden: true,
+        },
+        {
           name:     'host',
           help:     'IP address or hostname of a remote system',
           primary:  true,
@@ -188,6 +195,23 @@ module.exports = {
           name:    'ttl',
           help:    'time to live',
           default: 10
+        },
+        {
+          name: 'size',
+          help: 'specify datagram size'
+        },
+        {
+          name: 'flood',
+          help: 'trigger flooding ping',
+          bool: true
+        },
+        {
+          name: 'timeout',
+          help: 'specify timeout interval'
+        },
+        {
+          name: 'source',
+          help: 'specify source address or interface name'
         }
       ]
     },

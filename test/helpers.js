@@ -1,10 +1,8 @@
-Array.prototype.compare = function (subject) {
-  if (this.length != subject.length) return false;
-  for (var i = 0; i < subject.length; i++) {
-    if (this[i].compare) {
-      if (!this[i].compare(subject[i])) return false;
-    }
-    if (this[i] !== subject[i]) return false;
-  }
-  return true;
+var _ = require('lodash');
+
+var compare = function (source, subject) {
+  if (source.length != subject.length) return false;
+  return _.isEqual(_.sortBy(source), _.sortBy(subject));
 }
+
+module.exports.compare = compare;

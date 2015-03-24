@@ -7,6 +7,7 @@ the ability to dig deeper in the tree (as an option 'traversable')
 --------------
 
 
+Array Object matchers + their tests (mutliple/group/match tests as well)
 ability to write part of the command (if not ambigous, sh arp -> show arp)
 if NOT pipeable then DONT allow piping
 TESTS TESTS TESTS

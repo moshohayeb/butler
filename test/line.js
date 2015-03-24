@@ -1,16 +1,17 @@
-var util = require('util');
-var _ = require('lodash');
-var chai = require('chai');
+var _      = require('lodash');
+var util   = require('util');
+var chai   = require('chai');
 var expect = chai.expect;
 
+var compare = require('./helpers').compare;
+require('blanket')({
+  pattern: function (filename) {
+    return !/node_modules/.test(filename);
+  }
+})
 
-require('./helpers');
-var linejs = require('../lib/line.js')
-var commands = require('./schema.js')['commands'];
-
-var Line = _.partialRight(linejs, commands);
-
-var KEYS = ['name', 'help', 'completeOn', 'primary'];
+var LineJS   = require('../lib/line.js')
+var Commands = require('./schema.js')['commands'];
 
 var topLevelCommands = [
   'purge', 'show', 'exit',
@@ -18,47 +19,71 @@ var topLevelCommands = [
   'backup', 'health-stat', 'traceroute'
 ]
 
+var Line = _.partialRight(LineJS, Commands);
+var KEYS = ['name', 'help', 'completeOn', 'primary'];
+
 describe('@autocompletion', function () {
+  var name       = _.partialRight(_.pluck, 'name');
+  var help       = _.partialRight(_.pluck, 'help');
+  var completeOn = _.partialRight(_.pluck, 'completeOn');
+  var primary    = _.partialRight(_.pluck, 'primary');
   var rv;
 
-  var examine = function (line, pluck) {
-    var line = Line(line);
-    var cl;
-    // failures are permitted, only care about the result
-    line.parse();
-    cl = line.complete();
-    if (pluck)
-      return _.pluck(cl, 'name');
-    return cl;
+  function is(names, type) {
+    var checker = 'is' + _.capitalize(type.toLowerCase());
+    if (!_.all(names, _[checker]))
+      throw new Error(util.format('recieved a non-%s name (%s)', type, names))
   }
 
-  function compareKeys(v) {
-    if (_.isArray(v))
-      return _.all(v, function (fv) { compareKeys(fv) })
+  function hasLessThanOnePrimary(rv) {
+    var primaries = primary(rv);
+    if (_.countBy(primaries, function(b) {return b})['true'] > 1)
+      throw new Error('more than one primary is not permitted');
+  }
 
-    if (!_.isObject(v))
-      throw new Error('Return value of auto completion is not an object');
+  function hasCorrectKeys(rv) {
+    if (_.isArray(rv))
+      return _.all(rv, function (v) { hasCorrectKeys(v) })
 
-    if (!_.keys(v).compare(KEYS))
+    if (!_.isObject(rv))
+      throw new Error('auto completion entry is not an object');
+
+    if (!compare(_.keys(rv), KEYS))
       throw new Error(util.format(
-        'Return value of auto completion is does not hold a valid entry %s', _.keys(v)));
+        'auto completion does not hold a valid entry (Got: %s)', _.keys(rv)));
+  }
+
+  function processLine(line) {
+    var pline;
+    pline = Line(line);
+    pline.parse();
+    return pline.complete();
   }
 
   beforeEach(function () {
+    rv = null;
   })
 
-  afterEach(function () { compareKeys(rv) })
 
+  // called after each test case to make sure
+  // that every returned object confirms to
+  // what the API promises [ {OPT1} {OPT2} {OPT#} ]
+  afterEach(function () {
+    hasCorrectKeys(rv);
+    hasLessThanOnePrimary(rv);
+    is(name(rv), 'string');
+    is(help(rv), 'string');
 
+  })
 
 
   describe('@basic', function () {
-    describe('@lineparsing', function () {
+    describe('@lineParsing', function () {
       var lines = [
+        'some \tgarbage \bthat \ndoes\'t exist\r',
         '',
         'show hardware ',
         'show interface',
-        'some \tgarbage \bthat does\'t exist\r',
         '!!',
         '   ',
         '<>',
@@ -72,102 +97,165 @@ describe('@autocompletion', function () {
 
       _.each(lines, function (line) {
         it(util.format('should always return an array for value "%s"', line), function () {
-          rv = Line(line);
-          rv.parse();
-          rv = rv.complete();
+          rv = processLine(line);
           expect(rv).to.be.an('array');
         }) // it
       }) // each
+
     }) // lineparsing
   }) // basic
 
-
-
-
-
-
-
-
-
-  describe('@emptyline', function () {
-    before(function () {
-      rv = examine('')
-    })
-
-    it('should return the correct number of results', function () {
-      expect(rv).to.have.length(topLevelCommands.length)
-    })
-
-    it('should have the proper keys in each result', function () {
-      _.each(rv, function (v) {
-        expect(v).to.have.all.keys('name', 'help', 'primary', 'completeOn');
-      })
-    })
+  describe('@emptyLine', function () {
 
     it('should return the correct results', function () {
-      expect(_.pluck(rv, 'name')).to.have.members(topLevelCommands);
+      rv = processLine('')
+      expect(name(rv)).to.have.members(topLevelCommands);
     })
-  })
 
-  describe('@invalidpath', function () {
-    it('should return an array of zero length', function () {
-      expect(examine('invalid path ')).to.be.an('array').and.be.empty;
-      expect(examine('zigzag ')).to.be.an('array').and.be.empty;
-      expect(examine('show zigzag ')).to.be.an('array').and.be.empty;
-      expect(examine('ping zigzag power')).to.be.an('array').and.be.empty;
-    })
-  })
+  }) // describe
+
+  describe('@invalidPath', function () {
+
+    var lines = [
+      'invalid path',
+      'zig zag  ',
+      '           GGG          ',
+      'show zigzag ',
+      'ping zigzag power',
+    ]
+
+    _.each(lines, function (line) {
+      it(util.format('should return an array of zero length on incorrect input: "%s"', line), function () {
+        rv = processLine(line);
+        expect(rv).to.be.an('array').and.be.empty;
+      }) // it
+    }) // each
+  }) // describe
 
   describe('@commands', function () {
-    it('should return the correct top level commands', function () {
-      expect(examine('', true)).to.have.members(topLevelCommands)
-    })
+    var cases = [
+      { line: 'show ', expected: ['mac-address-table', 'hardware', 'clock', 'ip', 'terminal', 'log', 'version'] },
+      { line: 'purge ', expected: ['mac-address-table', 'log'] },
+      { line: 'show hardware', expected: ['hardware'] },
+      { line: 'show hardware ', expected: ['hard-drive', 'network-card', 'cpu'] },
+      { line: 'show hardware hard-drive', expected: ['hard-drive'] },
+      { line: 'show hardware hard-drive ', expected: ['fan', 'controller', 'errors', 'pager'] },
+    ]
 
-    it('should return correct deep traversal', function () {
-      expect(examine('show ', true)).to.have.members(
-        ['mac-address-table', 'hardware', 'clock', 'ip', 'terminal', 'log', 'version'])
-      expect(examine('purge ', true)).to.have.members(['mac-address-table', 'log'])
-      expect(examine('show hardware', true)).to.have.members(['hardware'])
-      expect(examine('show hardware ', true)).to.have.members(['hard-drive', 'network-card', 'cpu'])
-      expect(examine('show hardware hard-drive', true)).to.have.members(['hard-drive'])
-      expect(examine('show hardware hard-drive ', true)).to.have.members(['fan', 'controller', 'errors', 'pager'])
-    })
+    _.each(cases, function (c) {
+      it(util.format('should return correct result on deep traversal: "%s"', c.line), function () {
+        rv = processLine(c.line);
+        expect(name(rv)).to.have.members(c.expected)
+      }) //it
+    }) // each
 
     it('should display <cr> on executable commands', function () {
-      expect(examine('show version ', true)).to.include('<cr>');
+      rv = processLine('show version ')
+      expect(name(rv)).to.include('<cr>');
     })
 
     it('should not display <cr> on incomplete commands', function () {
-      expect(examine('show', true)).to.not.include('<cr>');
+      rv = processLine('show ')
+      expect(name(rv)).to.not.include('<cr>');
+
+      rv = processLine('show')
+      expect(name(rv)).to.not.include('<cr>');
     })
-  })
+
+  }) // describe commands
 
   describe('@pipes', function () {
-    describe('@pipeable', function () {
-      it('should display pipe on pipeable commands', function () {
-        expect(examine('ping', true)).to.not.include('|');
-        expect(examine('ping ', true)).to.include('|');
-        expect(examine('show hardware hard-drive fan ', true)).to.include('|');
-        expect(examine('show hardware hard-drive fan', true)).to.not.include('|');
-      })
-    })
+    var cases = [
+      { line: 'ping', pipe: false },
+      { line: 'ping ', pipe: true },
+      { line: 'reboot ', pipe: false },
+      { line: 'reboot', pipe: false },
+      { line: 'purge log ', pipe: false },
+      { line: 'show hardware hard-drive errors ', pipe: false },
+      { line: 'show hardware hard-drive errors', pipe: false },
+      { line: 'show hardware hard-drive fan ', pipe: true },
+      { line: 'show hardware hward-drive fan', pipe: false }
+    ]
 
-    describe('@notpipeable', function () {
-      it('should not display pipe on pipeable commands', function () {
-        expect(examine('reboot ', true)).to.not.include('|');
-        expect(examine('reboot', true)).to.not.include('|');
-        expect(examine('purge log', true)).to.not.include('|');
-        expect(examine('show hardware hard-drive errors ', true)).to.not.include('|');
-        expect(examine('show hardware hard-drive errors', true)).to.not.include('|');
-      })
-    })
-  })
+    _.each(cases, function (c) {
+      it(util.format('should display/hide pipe properly on command "%s"', c.line), function () {
+        rv               = processLine(c.line);
+        var commandNames = name(rv);
+        if (c.pipe)
+          expect(commandNames).to.include('|')
+        else
+          expect(commandNames).to.not.include('|')
+      }) // it
+    }) // each
+  }) // describe pipes
 
   describe('@partial', function () {
-    it('should return only commands that start with partial', function () {
-      expect(examine('s', true)).to.have.members(['ssh', 'show'])
-      expect(examine('show', true)).to.have.members(['show'])
-      expect(examine('ssh', true)).to.have.members(['ssh'])
+    var cases = [
+      { line: 's', expected: ['show', 'ssh'] },
+      { line: 'show', expected: ['show'] },
+      { line: 'ssh', expected: ['ssh'] }
+    ];
+
+    _.each(cases, function (c) {
+      it(util.format('should return only results that start with partial: %s', c.line), function () {
+        rv = processLine(c.line)
+        expect(name(rv)).to.have.members(c.expected)
+      }) //it
+    }) // each
+  }) // describe partial
+
+  describe('@option', function() {
+    describe('@hidegivenoptions', function() {
+      var cases = [
+        {line: 'ping ',
+          expected: ['<host>', 'ttl', 'size', 'flood', 'timeout', 'source', '<cr>', '|', '<value>']},
+        {line: 'ping t',
+          expected: ['timeout', 'ttl']},
+        {line: 'ping ttl',
+          expected: ['ttl']},
+        {line: 'ping ttl ',
+          expected: ['<value>']},
+        {line: 'ping ttl xxx',
+          expected: []},
+        {line: 'ping ttl xxx ',
+          expected: ['<host>', 'size', 'flood', 'timeout', 'source', '<cr>', '|', '<value>']},
+        {line: 'ping ttl xxx ',
+          expected: ['<host>', 'size', 'flood', 'timeout', 'source', '<cr>', '|', '<value>']},
+        {line: 'ping ttl xxx flood',
+          expected: ['flood']},
+        {line: 'ping ttl xxx flood ',
+          expected: ['<host>', 'size', 'timeout', 'source', '<cr>', '|', '<value>']},
+        {line: 'ping ttl xxx flood timeout yyy ',
+          expected: ['<host>', 'size', 'source', '<cr>', '|', '<value>']},
+        {line: 'ping ttl qwr flood timeout qwr source qwr size ttt 10.10.50.3',
+          expected: []},
+        {line: 'ping ttl qwr flood timeout qwr source qwr size ttt 10.10.50.3 ',
+          expected: ['<cr>', '|']},
+      ]
+
+      _.each(cases, function (c) {
+        it(util.format('should display the correct options for command "%s" ', c.line), function () {
+          rv = processLine(c.line);
+          expect(name(rv)).to.have.members(c.expected)
+        }) // it
+      }) // each
+    }) // describe ('hidegivenoptions')
+
+    describe('@optionModifiers', function () {
+      it('should handle boolean option properly', function () {
+        rv = processLine('ping flood ');
+        expect(name(rv)).to.not.include('flood')
+      })
+
+      it('should handle hidden option properly', function () {
+        rv = processLine('ping ');
+        expect(name(rv)).to.not.include('hiddenOpt')
+      })
+
+      it('should handle hidden option properly', function () {
+        rv = processLine('ping ');
+        expect(name(rv)).to.not.include('hiddenOpt')
+      })
     })
-  })
+  }) // describe (option)
 })
