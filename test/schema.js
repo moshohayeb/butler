@@ -210,8 +210,23 @@ module.exports = {
           help: 'specify timeout interval'
         },
         {
-          name: 'source',
-          help: 'specify source address or interface name'
+          name: 'src-ip',
+          help: 'specify source address',
+          group: 'source'
+        },
+        {
+          name: 'interface',
+          help: 'specify on which interface to send',
+          group: 'source',
+          match: function () {
+           return ['eth0', 'eth1', 'eth2', 'eth3']
+          }
+        },
+        {
+          name: 'fake',
+          help: 'send ping to fake host',
+          group: 'source',
+          bool: true
         }
       ]
     },

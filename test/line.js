@@ -37,7 +37,7 @@ describe('@autocompletion', function () {
 
   function hasLessThanOnePrimary(rv) {
     var primaries = primary(rv);
-    if (_.countBy(primaries, function(b) {return b})['true'] > 1)
+    if (_.countBy(primaries, function (b) {return b})['true'] > 1)
       throw new Error('more than one primary is not permitted');
   }
 
@@ -204,33 +204,61 @@ describe('@autocompletion', function () {
     }) // each
   }) // describe partial
 
-  describe('@option', function() {
-    describe('@hidegivenoptions', function() {
+  describe('@option', function () {
+    describe('@hidegivenoptions', function () {
       var cases = [
-        {line: 'ping ',
-          expected: ['<host>', 'ttl', 'size', 'flood', 'timeout', 'source', '<cr>', '|', '<value>']},
-        {line: 'ping t',
-          expected: ['timeout', 'ttl']},
-        {line: 'ping ttl',
-          expected: ['ttl']},
-        {line: 'ping ttl ',
-          expected: ['<value>']},
-        {line: 'ping ttl xxx',
-          expected: []},
-        {line: 'ping ttl xxx ',
-          expected: ['<host>', 'size', 'flood', 'timeout', 'source', '<cr>', '|', '<value>']},
-        {line: 'ping ttl xxx ',
-          expected: ['<host>', 'size', 'flood', 'timeout', 'source', '<cr>', '|', '<value>']},
-        {line: 'ping ttl xxx flood',
-          expected: ['flood']},
-        {line: 'ping ttl xxx flood ',
-          expected: ['<host>', 'size', 'timeout', 'source', '<cr>', '|', '<value>']},
-        {line: 'ping ttl xxx flood timeout yyy ',
-          expected: ['<host>', 'size', 'source', '<cr>', '|', '<value>']},
-        {line: 'ping ttl qwr flood timeout qwr source qwr size ttt 10.10.50.3',
-          expected: []},
-        {line: 'ping ttl qwr flood timeout qwr source qwr size ttt 10.10.50.3 ',
-          expected: ['<cr>', '|']},
+        {
+          line:     'ping ',
+          expected: ['<host>', 'ttl', 'size', 'flood', 'timeout', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
+        },
+        {
+          line:     'ping t',
+          expected: ['timeout', 'ttl']
+        },
+        {
+          line:     'ping ttl',
+          expected: ['ttl']
+        },
+        {
+          line:     'ping ttl ',
+          expected: ['<value>']
+        },
+        {
+          line:     'ping ttl xxx',
+          expected: []
+        },
+        {
+          line:     'ping ttl xxx ',
+          expected: ['<host>', 'size', 'flood', 'timeout', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
+        },
+        {
+          line:     'ping ttl xxx ',
+          expected: ['<host>', 'size', 'flood', 'timeout', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
+        },
+        {
+          line:     'ping ttl xxx flood',
+          expected: ['flood']
+        },
+        {
+          line:     'ping ttl xxx flood ',
+          expected: ['<host>', 'size', 'timeout', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
+        },
+        {
+          line:     'ping ttl xxx flood timeout yyy ',
+          expected: ['<host>', 'size', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
+        },
+        {
+          line:     'ping ttl qwr flood timeout qwr src-ip qwr size ttt 10.10.50.3',
+          expected: []
+        },
+        {
+          line:     'ping ttl qwr flood timeout qwr fake size ttt 10.10.50.3 ',
+          expected: ['<cr>', '|']
+        },
+        {
+          line:     'ping ttl qwr flood timeout qwr interface eth3 size ttt 10.10.50.3 ',
+          expected: ['<cr>', '|']
+        },
       ]
 
       _.each(cases, function (c) {
