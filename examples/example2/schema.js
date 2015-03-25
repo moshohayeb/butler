@@ -178,6 +178,8 @@ module.exports = {
         },
     ],
 
+
+
     possibleMsgr: 'Possible completions:',
     welcomeMsg:  'Welcome to CLI',
     prompt:      'vThunder(NOLICENSE)>'
