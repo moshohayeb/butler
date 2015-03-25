@@ -19,7 +19,7 @@ var topLevelCommands = [
   'backup', 'health-stat', 'traceroute'
 ]
 
-var Line = _.partialRight(LineJS, Commands);
+var Line = _.partialRight(LineJS, Commands, { appendGroupHelp: true });
 var KEYS = ['name', 'help', 'completeOn', 'primary'];
 
 describe('@autocompletion', function () {
@@ -77,33 +77,31 @@ describe('@autocompletion', function () {
   })
 
 
-  describe('@basic', function () {
-    describe('@lineParsing', function () {
-      var lines = [
-        'some \tgarbage \bthat \ndoes\'t exist\r',
-        '',
-        'show hardware ',
-        'show interface',
-        '!!',
-        '   ',
-        '<>',
-        '?',
-        1241251,
-        null,
-        1.34,
-        { exist: false },
-        []
-      ]
+  describe('@lineParsing', function () {
+    var lines = [
+      'some \tgarbage \bthat \ndoes\'t exist\r',
+      '',
+      'show hardware ',
+      'show interface',
+      '!!',
+      '   ',
+      '<>',
+      '?',
+      1241251,
+      null,
+      1.34,
+      { exist: false },
+      []
+    ]
 
-      _.each(lines, function (line) {
-        it(util.format('should always return an array for value "%s"', line), function () {
-          rv = processLine(line);
-          expect(rv).to.be.an('array');
-        }) // it
-      }) // each
+    _.each(lines, function (line) {
+      it(util.format('should always return an array for value "%s"', line), function () {
+        rv = processLine(line);
+        expect(rv).to.be.an('array');
+      }) // it
+    }) // each
 
-    }) // lineparsing
-  }) // basic
+  }) // lineparsing
 
   describe('@emptyLine', function () {
 
@@ -204,7 +202,7 @@ describe('@autocompletion', function () {
     }) // each
   }) // describe partial
 
-  describe('@option', function () {
+  describe('@options', function () {
     describe('@hidegivenoptions', function () {
       var cases = [
         {
@@ -221,7 +219,7 @@ describe('@autocompletion', function () {
         },
         {
           line:     'ping ttl ',
-          expected: ['<value>']
+          expected: ['NUM<length1-5>']
         },
         {
           line:     'ping ttl xxx',
@@ -262,7 +260,7 @@ describe('@autocompletion', function () {
       ]
 
       _.each(cases, function (c) {
-        it(util.format('should display the correct options for command "%s" ', c.line), function () {
+        it(util.format('should hide the given options for command "%s" ', c.line), function () {
           rv = processLine(c.line);
           expect(name(rv)).to.have.members(c.expected)
         }) // it
@@ -270,20 +268,102 @@ describe('@autocompletion', function () {
     }) // describe ('hidegivenoptions')
 
     describe('@optionModifiers', function () {
-      it('should handle boolean option properly', function () {
-        rv = processLine('ping flood ');
-        expect(name(rv)).to.not.include('flood')
+      describe('@boolean', function () {
+        it('should be enough to specify the name', function () {
+          rv = processLine('ping flood ttl 33');
+          expect(name(rv)).to.not.include('flood')
+        }) // it
+      }) // describe @boolean
+
+      describe('@match', function () {
+        it('should list the correct result when using OBJECT as match', function () {
+          rv = processLine('show terminal color ');
+          expect(name(rv)).to.have.members(['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan']);
+        }) // it
+
+        it('should list the correct result when using ARRAY as match', function () {
+          rv = processLine('ping interface ');
+          expect(name(rv)).to.have.members(['eth0', 'eth1', 'eth2', 'eth3', '34']);
+        }) // it
+
+        it('should list the correct result when using CALLABLE as match', function () {
+          rv = processLine('ping timeout ');
+          expect(name(rv)).to.have.members(['10', '1', '30', '60']);
+        }) // it
+
+        it('should list the correct result when using REGEX as match', function () {
+          rv = processLine('ping ttl ');
+          expect(name(rv)).to.have.members(['NUM<length1-5>']);
+        })
+
+        it('should display <value> if non specified', function () {
+          rv = processLine('ping ttl 33 size ');
+          expect(name(rv)).to.have.members(['<value>']);
+        })
+      }) // describe @boolean
+
+      describe('@hidden', function () {
+        it('should handle hidden option properly', function () {
+          rv = processLine('ping ');
+          expect(name(rv)).to.not.include('hiddenOpt')
+        })
       })
 
-      it('should handle hidden option properly', function () {
-        rv = processLine('ping ');
-        expect(name(rv)).to.not.include('hiddenOpt')
+      describe('@multiple', function () {
+        it('should return only the choices when non is provided', function () {
+          rv = processLine('show terminal color ')
+          expect(name(rv)).to.have.members(
+            ['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan']);
+        })
+
+        it('should return all the choices when at least one is provided', function () {
+          rv = processLine('show terminal color green ')
+          expect(name(rv)).to.have.members(
+            ['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan', '<cr>', 'width']);
+        })
+
+        it('indicate chosen options', function () {
+          rv        = processLine('show terminal color green blue ')
+          var green = _.find(rv, { name: 'green' })
+          var blue  = _.find(rv, { name: 'blue' })
+          var black = _.find(rv, { name: 'black' })
+          expect(green.help).to.have.a.string('selected')
+          expect(blue.help).to.have.a.string('selected')
+          expect(black.help).to.not.have.a.string('selected')
+        })
+      }) // describe (multiple)
+
+      describe('@group', function () {
+        it('should display group in help message of commands in the same group', function () {
+          rv          = processLine('ping ');
+          var objects = _.filter(rv, function (v) {
+            return _.contains(['src-ip', 'fake', 'interface'], v.name);
+          })
+          _.each(objects, function (o) {
+            expect(o.help).to.have.a.string('(group: source)')
+          })
+        })
+
+        it('should hide all of the same group if one is specified', function () {
+          rv = processLine('ping src-ip 10.10.60.2 ')
+          expect(name(rv)).to.not.include('src-ip')
+          expect(name(rv)).to.not.include('fake')
+          expect(name(rv)).to.not.include('interface')
+        })
+
+        it('should not show group help message if appendGroupHelp is set to false', function () {
+          var l       = LineJS('ping ', Commands, { appendGroupHelp: false })
+          l.parse();
+          rv          = l.complete();
+          var objects = _.filter(rv, function (v) {
+            return _.contains(['src-ip', 'fake', 'interface'], v.name);
+          })
+          _.each(objects, function (o) {
+            expect(o.help).to.not.have.a.string('(group: source)')
+          })
+        })
       })
 
-      it('should handle hidden option properly', function () {
-        rv = processLine('ping ');
-        expect(name(rv)).to.not.include('hiddenOpt')
-      })
-    })
+    }) // describe (optionModifier)
   }) // describe (option)
 })

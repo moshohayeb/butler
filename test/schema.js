@@ -6,6 +6,7 @@ module.exports = {
   motd:         function (show) {
     show('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
   },
+  appendGroupHelp: true,
 
   commands: [
 
@@ -22,8 +23,8 @@ module.exports = {
       // this commmand should be ignored
       // because it has no name
       noname: 'this command has no name',
-      help: 'so it should not be treated as such',
-      'run': {} // invalid run context
+      help:   'so it should not be treated as such',
+      'run':  {} // invalid run context
     },
 
     {
@@ -35,11 +36,9 @@ module.exports = {
     },
 
     {
-      name: 'traceroute',
-      help: {'help cant be an object': 1},
-      options: [
-
-      ]
+      name:    'traceroute',
+      help:    { 'help cant be an object': 1 },
+      options: []
     },
 
     {
@@ -69,12 +68,12 @@ module.exports = {
           run:  dummy
         },
         {
-          name: 'hardware',
-          help: 'show system hardware information',
+          name:     'hardware',
+          help:     'show system hardware information',
           commands: [
             {
-              name: 'hard-drive',
-              help: 'show info about the state of HD',
+              name:     'hard-drive',
+              help:     'show info about the state of HD',
               commands: [
                 {
                   name: 'fan',
@@ -89,13 +88,13 @@ module.exports = {
                   name: 'errors',
                   help: 'show hard drive errors'
                 },
-                { },
-                { },
-                { name: {anObject: ' measurements '}},
-                { name: null},
+                {},
+                {},
+                { name: { anObject: ' measurements ' } },
+                { name: null },
                 { name: 'pager' },
               ],
-              options: [
+              options:  [
                 {
                   name: 'OPT1',
                   help: 'gonna get ignored because commands are present'
@@ -110,7 +109,7 @@ module.exports = {
               name: 'cpu'
             },
             {
-              ignore_me_please: 213,
+              ignore_me_please:           213,
               because_i_dont_have_a_name: 'LOL'
             }
           ]
@@ -138,20 +137,45 @@ module.exports = {
             {
               name: 'brief',
               help: 'show minimum information',
-              bool: true,
+              bool: true
             },
 
           ]
         },
         {
-          name: 'terminal',
-          help: 'show current terminal parameters',
-          run:  dummy
+          name:    'terminal',
+          help:    'show current terminal parameters',
+          options: [
+            {
+              name:     'color',
+              help:     'colors to use when displaying results',
+              match:    {
+                red:     'rhe red color', blue: 1, green: 'green as a leaf',
+                yellow:  'yellow as the sun', cyan: 'this is a help message',
+                magenta: null, 'white': undefined, 'black': 'who uses black'
+              },
+              multiple: true
+            },
+            {
+              name: 'width',
+              help: 'the width of the terminal'
+            }
+          ],
+          run:     dummy
         },
         {
-          name: 'log',
-          help: 'show system log',
-          run:  dummy
+          name:    'log',
+          help:    'show system log',
+          options: [
+            {
+              name:    'verbose',
+              help:    'show verbose log',
+              bool:    true,
+              primary: true
+            }
+          ],
+          meta:    'pipeable',
+          run:     dummy
         },
         {
           name: 'version',
@@ -180,21 +204,23 @@ module.exports = {
       run:     dummy,
       options: [
         {
-          name: 'hiddenOpt',
-          help: 'hidden, doesn\'t matter',
-          hidden: true,
+          name:   'hiddenOpt',
+          help:   'hidden, doesn\'t matter',
+          hidden: true
         },
         {
           name:     'host',
           help:     'IP address or hostname of a remote system',
           primary:  true,
-          required: true,
+          required: true
           //match:    /^\d+$/
         },
         {
-          name:    'ttl',
-          help:    'time to live',
-          default: 10
+          name:      'ttl',
+          help:      'time to live',
+          matchName: 'NUM<length1-5>',
+          match:     /^\d+$/,
+          default:   10
         },
         {
           name: 'size',
@@ -206,27 +232,28 @@ module.exports = {
           bool: true
         },
         {
-          name: 'timeout',
-          help: 'specify timeout interval'
-        },
-        {
-          name: 'src-ip',
-          help: 'specify source address',
-          group: 'source'
-        },
-        {
-          name: 'interface',
-          help: 'specify on which interface to send',
-          group: 'source',
+          name:  'timeout',
+          help:  'specify timeout interval',
           match: function () {
-           return ['eth0', 'eth1', 'eth2', 'eth3']
+            return [1, 10, 30, 60]
           }
         },
         {
-          name: 'fake',
-          help: 'send ping to fake host',
+          name:  'src-ip',
+          help:  'specify source address',
+          group: 'source'
+        },
+        {
+          name:  'interface',
+          help:  'specify on which interface to send',
           group: 'source',
-          bool: true
+          match: [{ name: 'eth0', help: 'localhost interface 127.0.0.1' }, 'eth1', 'eth2', 'eth3', 34, null]
+        },
+        {
+          name:  'fake',
+          help:  'send ping to fake host',
+          group: 'source',
+          bool:  true
         }
       ]
     },
@@ -236,6 +263,5 @@ module.exports = {
       help: 'open an ssh connection',
       run:  dummy
     },
-
   ]
 }

@@ -1,3 +1,4 @@
+--watch
 --reporter spec
 --growl
 --ui bdd
