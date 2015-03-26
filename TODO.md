@@ -6,8 +6,8 @@ the ability to dig deeper in the tree (as an option 'traversable')
 
 --------------
 
+CLEAR OPTIONS AND PIPE (dont be so strict)
 Option color 
-
 
 BETTER support for primary option options variables (if there is a list print it instead of <value>)
 + PRIMARY tests

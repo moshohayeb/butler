@@ -126,9 +126,9 @@ describe('@autocompletion', function () {
       it(util.format('should return an array of zero length on incorrect input: "%s"', line), function () {
         rv = processLine(line);
         expect(rv).to.be.an('array').and.be.empty;
-      }) // it
-    }) // each
-  }) // describe
+      }); // it
+    }); // each
+  }); // describe
 
   describe('@commands', function () {
     var cases = [
@@ -138,29 +138,28 @@ describe('@autocompletion', function () {
       { line: 'show hardware ', expected: ['hard-drive', 'network-card', 'cpu'] },
       { line: 'show hardware hard-drive', expected: ['hard-drive'] },
       { line: 'show hardware hard-drive ', expected: ['fan', 'controller', 'errors', 'pager'] },
-    ]
+    ];
 
     _.each(cases, function (c) {
       it(util.format('should return correct result on deep traversal: "%s"', c.line), function () {
         rv = processLine(c.line);
         expect(name(rv)).to.have.members(c.expected)
-      }) //it
-    }) // each
+      }); //it
+    }); // each
 
     it('should display <cr> on executable commands', function () {
-      rv = processLine('show version ')
+      rv = processLine('show version ');
       expect(name(rv)).to.include('<cr>');
     })
 
     it('should not display <cr> on incomplete commands', function () {
-      rv = processLine('show ')
+      rv = processLine('show ');
       expect(name(rv)).to.not.include('<cr>');
 
-      rv = processLine('show')
+      rv = processLine('show');
       expect(name(rv)).to.not.include('<cr>');
-    })
-
-  }) // describe commands
+    });
+  }); // describe commands
 
   describe('@pipes', function () {
     var cases = [
@@ -173,7 +172,7 @@ describe('@autocompletion', function () {
       { line: 'show hardware hard-drive errors', pipe: false },
       { line: 'show hardware hard-drive fan ', pipe: true },
       { line: 'show hardware hward-drive fan', pipe: false }
-    ]
+    ];
 
     _.each(cases, function (c) {
       it(util.format('should display/hide pipe properly on command "%s"', c.line), function () {
@@ -183,9 +182,9 @@ describe('@autocompletion', function () {
           expect(commandNames).to.include('|')
         else
           expect(commandNames).to.not.include('|')
-      }) // it
-    }) // each
-  }) // describe pipes
+      }); // it
+    }); // each
+  }); // describe pipes
 
   describe('@partial', function () {
     var cases = [
@@ -196,11 +195,11 @@ describe('@autocompletion', function () {
 
     _.each(cases, function (c) {
       it(util.format('should return only results that start with partial: %s', c.line), function () {
-        rv = processLine(c.line)
-        expect(name(rv)).to.have.members(c.expected)
-      }) //it
-    }) // each
-  }) // describe partial
+        rv = processLine(c.line);
+        expect(name(rv)).to.have.members(c.expected);
+      }); //it
+    }); // each
+  }); // describe partial
 
   describe('@options', function () {
     describe('@hidegivenoptions', function () {
@@ -256,114 +255,135 @@ describe('@autocompletion', function () {
         {
           line:     'ping ttl qwr flood timeout qwr interface eth3 size ttt 10.10.50.3 ',
           expected: ['<cr>', '|']
-        },
-      ]
+        }
+      ];
 
       _.each(cases, function (c) {
         it(util.format('should hide the given options for command "%s" ', c.line), function () {
           rv = processLine(c.line);
           expect(name(rv)).to.have.members(c.expected)
-        }) // it
-      }) // each
-    }) // describe ('hidegivenoptions')
+        }); // it
+      }); // each
+    }); // describe ('hidegivenoptions')
 
     describe('@optionModifiers', function () {
       describe('@boolean', function () {
         it('should be enough to specify the name', function () {
           rv = processLine('ping flood ttl 33');
           expect(name(rv)).to.not.include('flood')
-        }) // it
-      }) // describe @boolean
+        }); // it
+      }); // describe @boolean
 
       describe('@match', function () {
         it('should list the correct result when using OBJECT as match', function () {
           rv = processLine('show terminal color ');
           expect(name(rv)).to.have.members(['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan']);
-        }) // it
+        }); // it
 
         it('should list the correct result when using ARRAY as match', function () {
           rv = processLine('ping interface ');
           expect(name(rv)).to.have.members(['eth0', 'eth1', 'eth2', 'eth3', '34']);
-        }) // it
+        }); // it
 
         it('should list the correct result when using CALLABLE as match', function () {
           rv = processLine('ping timeout ');
           expect(name(rv)).to.have.members(['10', '1', '30', '60']);
-        }) // it
+        }); // it
 
         it('should list the correct result when using REGEX as match', function () {
           rv = processLine('ping ttl ');
           expect(name(rv)).to.have.members(['NUM<length1-5>']);
-        })
+        });
 
         it('should display <value> if non specified', function () {
           rv = processLine('ping ttl 33 size ');
           expect(name(rv)).to.have.members(['<value>']);
-        })
-      }) // describe @boolean
+        });
+      }); // describe @boolean
 
       describe('@hidden', function () {
         it('should handle hidden option properly', function () {
           rv = processLine('ping ');
-          expect(name(rv)).to.not.include('hiddenOpt')
-        })
-      })
+          expect(name(rv)).to.not.include('hiddenOpt');
+        });
+      });
 
       describe('@multiple', function () {
         it('should return only the choices when non is provided', function () {
           rv = processLine('show terminal color ')
           expect(name(rv)).to.have.members(
             ['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan']);
-        })
+        });
 
         it('should return all the choices when at least one is provided', function () {
-          rv = processLine('show terminal color green ')
+          rv = processLine('show terminal color green ');
           expect(name(rv)).to.have.members(
             ['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan', '<cr>', 'width']);
         })
 
         it('indicate chosen options', function () {
-          rv        = processLine('show terminal color green blue ')
-          var green = _.find(rv, { name: 'green' })
-          var blue  = _.find(rv, { name: 'blue' })
-          var black = _.find(rv, { name: 'black' })
-          expect(green.help).to.have.a.string('selected')
-          expect(blue.help).to.have.a.string('selected')
-          expect(black.help).to.not.have.a.string('selected')
-        })
-      }) // describe (multiple)
+          rv        = processLine('show terminal color green blue ');
+          var green = _.find(rv, { name: 'green' });
+          var blue  = _.find(rv, { name: 'blue' });
+          var black = _.find(rv, { name: 'black' });
+          expect(green.help).to.have.a.string('selected');
+          expect(blue.help).to.have.a.string('selected');
+          expect(black.help).to.not.have.a.string('selected');
+        });
+      }); // describe (multiple)
+
+      describe('@default', function () {
+        it('should display default value in help when { appendHelpGroup: true }', function () {
+          var l   = LineJS('ping ', Commands, { appendHelpDefault: true });
+          l.parse();
+          rv      = l.complete();
+          var ttl = _.find(rv, { name: 'ttl' });
+          expect(ttl.help).to.have.a.string('(default: 10)')
+        });
+
+        it('should not display default value in help when { appendHelpGroup: false }', function () {
+          var l   = LineJS('ping ', Commands, { appendHelpDefault: false });
+          l.parse();
+          rv      = l.complete();
+          var ttl = _.find(rv, { name: 'ttl' });
+          expect(ttl.help).to.not.have.a.string('(default: 10)')
+        });
+      });
 
       describe('@group', function () {
-        it('should display group in help message of commands in the same group', function () {
-          rv          = processLine('ping ');
-          var objects = _.filter(rv, function (v) {
-            return _.contains(['src-ip', 'fake', 'interface'], v.name);
-          })
-          _.each(objects, function (o) {
-            expect(o.help).to.have.a.string('(group: source)')
-          })
-        })
-
-        it('should hide all of the same group if one is specified', function () {
-          rv = processLine('ping src-ip 10.10.60.2 ')
-          expect(name(rv)).to.not.include('src-ip')
-          expect(name(rv)).to.not.include('fake')
-          expect(name(rv)).to.not.include('interface')
-        })
-
-        it('should not show group help message if appendGroupHelp is set to false', function () {
-          var l       = LineJS('ping ', Commands, { appendGroupHelp: false })
+        it('should display group in help message of commands in the same group if {appendHelpGroup: true}', function () {
+          var l       = LineJS('ping ', Commands, { appendHelpGroup: true });
           l.parse();
           rv          = l.complete();
           var objects = _.filter(rv, function (v) {
             return _.contains(['src-ip', 'fake', 'interface'], v.name);
-          })
+          });
+
+          _.each(objects, function (o) {
+            expect(o.help).to.have.a.string('(group: source)')
+          });
+        });
+
+        it('should hide all of the same group if one is specified', function () {
+          rv = processLine('ping src-ip 10.10.60.2 ');
+          expect(name(rv)).to.not.include('src-ip');
+          expect(name(rv)).to.not.include('fake');
+          expect(name(rv)).to.not.include('interface');
+        });
+
+        it('should not show group help message if {appendHelpGroup: false}', function () {
+          var l       = LineJS('ping ', Commands, { appendHelpGroup: false });
+          l.parse();
+          rv          = l.complete();
+          var objects = _.filter(rv, function (v) {
+            return _.contains(['src-ip', 'fake', 'interface'], v.name);
+          });
+
           _.each(objects, function (o) {
             expect(o.help).to.not.have.a.string('(group: source)')
-          })
-        })
-      })
-
-    }) // describe (optionModifier)
-  }) // describe (option)
-})
+          });
+        });
+      });
+    }); // describe (optionModifier)
+  }); // describe (option)
+});
