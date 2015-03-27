@@ -111,7 +111,7 @@ module.exports = {
           help:     'IP address or hostname of a remote system',
           primary:  true,
           required: true,
-          //match:    /^\d+$/
+          //match:    /^\d+/
         },
         {
           name:    'ttl',
