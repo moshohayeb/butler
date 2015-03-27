@@ -6,6 +6,8 @@ the ability to dig deeper in the tree (as an option 'traversable')
 
 --------------
 
+show errros on tab compls
+A function that takes a value and an option and return true if that value is correct for that option
 CLEAR OPTIONS AND PIPE (dont be so strict)
 Option color 
 
