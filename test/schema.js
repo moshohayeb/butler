@@ -242,7 +242,8 @@ module.exports = {
         {
           name:  'src-ip',
           help:  'specify source address',
-          group: 'source'
+          group: 'source',
+          default: '10.10.60.24'
         },
         {
           name:  'interface',
