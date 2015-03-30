@@ -9,6 +9,7 @@ module.exports = {
   appendHelpGroup: true,
   appendHelpDefault: true,
 
+
   commands: [
 
     // couple of errornous/incomplete commands
