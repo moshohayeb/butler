@@ -19,7 +19,7 @@ var topLevelCommands = [
   'backup', 'health-stat', 'traceroute'
 ]
 
-var Line = _.partialRight(LineJS, Commands, { appendGroupHelp: true });
+var Line = _.partialRight(LineJS, Commands, { appendGroup: true });
 var KEYS = ['name', 'help', 'completeOn', 'primary'];
 
 describe('@autocompletion', function () {
@@ -333,16 +333,16 @@ describe('@autocompletion', function () {
       }); // describe (multiple)
 
       describe('@default', function () {
-        it('should display default value in help when { appendHelpGroup: true }', function () {
-          var l   = LineJS('ping ', Commands, { appendHelpDefault: true });
+        it('should display default value in help when { appendGroup: true }', function () {
+          var l   = LineJS('ping ', Commands, { appendDefault: true });
           l.parse();
           rv      = l.complete();
           var ttl = _.find(rv, { name: 'ttl' });
           expect(ttl.help).to.have.a.string('(default: 10)')
         });
 
-        it('should not display default value in help when { appendHelpGroup: false }', function () {
-          var l   = LineJS('ping ', Commands, { appendHelpDefault: false });
+        it('should not display default value in help when { appendGroup: false }', function () {
+          var l   = LineJS('ping ', Commands, { appendDefault: false });
           l.parse();
           rv      = l.complete();
           var ttl = _.find(rv, { name: 'ttl' });
@@ -351,8 +351,8 @@ describe('@autocompletion', function () {
       });
 
       describe('@group', function () {
-        it('should display group in help message of commands in the same group if {appendHelpGroup: true}', function () {
-          var l       = LineJS('ping ', Commands, { appendHelpGroup: true });
+        it('should display group in help message of commands in the same group if {appendGroup: true}', function () {
+          var l       = LineJS('ping ', Commands, { appendGroup: true });
           l.parse();
           rv          = l.complete();
           var objects = _.filter(rv, function (v) {
@@ -371,8 +371,8 @@ describe('@autocompletion', function () {
           expect(name(rv)).to.not.include('interface');
         });
 
-        it('should not show group help message if {appendHelpGroup: false}', function () {
-          var l       = LineJS('ping ', Commands, { appendHelpGroup: false });
+        it('should not show group help message if {appendGroup: false}', function () {
+          var l       = LineJS('ping ', Commands, { appendGroup: false });
           l.parse();
           rv          = l.complete();
           var objects = _.filter(rv, function (v) {

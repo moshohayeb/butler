@@ -2,7 +2,7 @@
 If NOT pipeable then DONT allow piping
 Ability to write part of the command (if not ambigous, sh arp -> show arp)
 RL API to change the prompt
-Option color 
+Option color  + replace marak with chalk
 
 BETTER support for primary option options variables (if there is a list print it instead of <value>)
 PRIMARY tests

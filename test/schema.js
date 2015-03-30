@@ -6,9 +6,10 @@ module.exports = {
   motd:         function (show) {
     show('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
   },
-  appendHelpGroup: true,
-  appendHelpDefault: true,
 
+  appendGroup:   true,
+  appendDefault: true,
+  colors: false,
 
   commands: [
 
@@ -241,9 +242,9 @@ module.exports = {
           }
         },
         {
-          name:  'src-ip',
-          help:  'specify source address',
-          group: 'source',
+          name:    'src-ip',
+          help:    'specify source address',
+          group:   'source',
           default: '10.10.60.24'
         },
         {
