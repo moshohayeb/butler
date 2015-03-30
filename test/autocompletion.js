@@ -8,7 +8,7 @@ require('blanket')({
   pattern: function (filename) {
     return !/node_modules/.test(filename);
   }
-})
+});
 
 var LineJS   = require('../lib/line.js')
 var Commands = require('./schema.js')['commands'];

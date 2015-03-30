@@ -1,9 +1,3 @@
-
-the ability to dig deeper in the tree (as an option 'traversable')
-    CLI) config
-    CLI:config) now ac will prepend config for ac
-        -- maybe add instances
-
 --------------
 
 Revise utility
@@ -36,10 +30,7 @@ Make wf switch cli tree (as example2.js)
 pipe cmds options
 schema validator
 
-
-
-- Other Option types
-
-
-
-(mutliple/group/match tests as well)
+the ability to dig deeper in the tree (as an option 'traversable')
+    CLI) config
+    CLI:config) now ac will prepend config for ac
+        -- maybe add instances

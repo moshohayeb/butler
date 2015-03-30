@@ -2,7 +2,7 @@
   "name": "cli",
   "version": "1.0.0",
   "description": "",
-  "main": "cli.js",
+  "main": "./lib/butler.js",
   "dependencies": {
     "colors": "^1.0.3",
     "keypress": "^0.2.1",
