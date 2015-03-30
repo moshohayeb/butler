@@ -2,7 +2,7 @@ var dummy = function (context) { ; };
 
 module.exports = {
   possibleMsgs: 'Possible Completions:',
-  prompt:       '<WIREFILTER-SWITCH>',
+  prompt:       '<COMPANY-SWITCH>',
   motd:         function (show) {
     show('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
   },
