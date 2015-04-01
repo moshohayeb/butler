@@ -1,10 +1,10 @@
 var dummy = function (context) { ; };
 
 module.exports = {
-  possibleMsgs: 'Possible Completions:',
+  possibleMsg: 'Possible Completions:',
   prompt:       '<SPACE-X-CLI>',
-  motd:         function (show) {
-    show('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
+  motd:         function () {
+    console.log('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
   },
 
   appendGroup:   true,
@@ -204,7 +204,10 @@ module.exports = {
       name:    'ping',
       help:    'send ICMP echo messages',
       meta:    ['pipeable'],
-      run:     dummy,
+      run:     function(context){
+        console.log(context);
+        this.setPrompt('HEHE>>>')
+      },
       options: [
         {
           name:   'hiddenOpt',

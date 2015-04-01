@@ -1,7 +1,5 @@
 --------------
 If NOT pipeable then DONT allow piping
-Ability to write part of the command (if not ambigous, sh arp -> show arp)
-RL API to change the prompt
 Option color  + replace marak with chalk
 
 BETTER support for primary option options variables (if there is a list print it instead of <value>)
@@ -21,6 +19,7 @@ Make sure store is sane
 Make wf switch cli tree (as example2.js)
 pipe cmds options
 schema validator
+Ability to write part of the command (if not ambigous, sh arp -> show arp)
 
 the ability to dig deeper in the tree (as an option 'traversable')
     CLI) config
@@ -29,3 +28,10 @@ the ability to dig deeper in the tree (as an option 'traversable')
         
 Execution tests (required/incomplete/no run...etc)
 TESTS TESTS TESTS
+
+
+
+
+
+Done:
+RL API to change the prompt
