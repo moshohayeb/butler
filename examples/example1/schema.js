@@ -6,6 +6,8 @@ module.exports = {
   motd:         function () {
     console.log('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
   },
+  appendDefault: true,
+  appendGroup: true,
 
   commands: [
 
@@ -135,20 +137,35 @@ module.exports = {
         {
           name: 'interval',
           help: 'interval to flush',
-          default: 'REGEX'
+          matchName: '<STRING[1-60]>',
+          required: true,
+          hidden: true
         },
         {
           name: 'remote-host',
           help: 'where to push flushed data',
-          primary: true,
           //match: [{name: 'OPT1', help: 'HELP FOR OPT1'}, {name: 'OPT2', help: 'HELP FOR OPT2'}],
           //match: ['OPT1', 'OPT2'],
           //match: function() { return ['FROMFUNCOPT1', 'FROMFUNCOPT2'] },
           //match: function() { return [{name: 'FROMFUNCOPT1', help: 'just helping'}, {name: 'FROMFUNCOPT2', help:'oopsie'}] },
           //match: null,
-          match: /^\d+$/,
+          match: new RegExp('(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(?:\\.(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])){3}'),
           matchName: '<NUMBER>',
           required: true
+        },
+        {
+          name: 'cron',
+          help: 'cron interval (1-60)',
+          required: true,
+          matchName: '<NUMBER>',
+          match: /^\d+$/
+        },
+        {
+          name: 'countries',
+          help: 'which countries are participating',
+          match: ['brazil', 'saudi-arabia', 'usa', 'uk', 'indonesia', 'sweden', 'mexico', 'australia'],
+          primary: true,
+          group: 'cc'
         }
       ]
     }
