@@ -1,6 +1,6 @@
 --------------
 If NOT pipeable then DONT allow piping
-Option color  + replace marak with chalk
+Option color + replace marak with chalk
 
 BETTER support for primary option options variables (if there is a list print it instead of <value>)
 PRIMARY tests

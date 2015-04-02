@@ -3,8 +3,8 @@ var dummy = function (context) { ; };
 module.exports = {
   possibleMsgs: 'Possible Completions:',
   prompt:       '<COMPANY-SWITCH>',
-  motd:         function (show) {
-    show('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
+  motd:         function () {
+    console.log('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
   },
 
   commands: [
@@ -120,6 +120,38 @@ module.exports = {
         }
       ]
     },
+
+    {
+      name: 'flush',
+      help: 'flush the system',
+      run: function(context) {
+        console.log(context);
+      },
+      options: [
+        {
+          name: 'time',
+          help: 'when to flush'
+        },
+        {
+          name: 'interval',
+          help: 'interval to flush',
+          default: 'REGEX'
+        },
+        {
+          name: 'remote-host',
+          help: 'where to push flushed data',
+          primary: true,
+          //match: [{name: 'OPT1', help: 'HELP FOR OPT1'}, {name: 'OPT2', help: 'HELP FOR OPT2'}],
+          //match: ['OPT1', 'OPT2'],
+          //match: function() { return ['FROMFUNCOPT1', 'FROMFUNCOPT2'] },
+          //match: function() { return [{name: 'FROMFUNCOPT1', help: 'just helping'}, {name: 'FROMFUNCOPT2', help:'oopsie'}] },
+          //match: null,
+          match: /^\d+$/,
+          matchName: '<NUMBER>',
+          required: true
+        }
+      ]
+    }
 
   ]
 }
