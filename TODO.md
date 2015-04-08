@@ -4,11 +4,10 @@ Option color + replace marak with chalk
 
 BETTER support for primary option options variables (if there is a list print it instead of <value>)
 PRIMARY tests
-Test primary with each flag (prevent boolean), by default is is Required
 
-Should be able to behave correctly when mouse in the middle
+should be able to behave correctly when mouse in the middle
 
-config is a a file and schema (commands) is another file
+config is outside commands file
 if matches take an argument, then use that to validate the input
 TEST Primary with different types
 match should accept array/object
