@@ -1,20 +1,12 @@
 --------------
 If NOT pipeable then DONT allow piping
-Option color + replace marak with chalk
 
-BETTER support for primary option options variables (if there is a list print it instead of <value>)
-PRIMARY tests
 
-should be able to behave correctly when mouse in the middle
-
+rewrite tests
 config is outside commands file
 if matches take an argument, then use that to validate the input
-TEST Primary with different types
-match should accept array/object
 more if alot of commands
-Show group in help option
 1 Extra argument (called argument). The last ARGUMENT
-Replace colors with chalk
 Modify readline.js to fit our needs (READ AND UNDERSTAND THE CODE)
 Make sure store is sane
 Make wf switch cli tree (as example2.js)
@@ -36,3 +28,10 @@ TESTS TESTS TESTS
 
 Done:
 RL API to change the prompt
+should be able to behave correctly when mouse in the middle
+match should accept array/object
+BETTER support for primary option options variables (if there is a list print it instead of <value>)
+PRIMARY tests
+Option color + replace marak with chalk (will be fixed when colors is updated)
+TEST Primary with different types
+Show group in help option

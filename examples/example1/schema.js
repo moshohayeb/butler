@@ -54,12 +54,14 @@ module.exports = {
         {
           name:    'interface',
           help:    'show information about available interfaces',
-          run:     dummy,
+          run:     function(context) {
+            console.log(context);
+          },
           options: [
             {
               name:     'name',
               help:     'enter interface name',
-              match:    function () { return [1, 2, 3, 4, 5]},
+              match:    function (value) { return value === 'YES'; },
               required: true,
               primary:  true
             },
