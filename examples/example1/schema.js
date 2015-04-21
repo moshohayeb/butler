@@ -107,7 +107,6 @@ module.exports = {
     {
       name:    'ping',
       help:    'send ICMP echo messages',
-      meta:    ['pipeable'],
       run:     dummy,
       options: [
         {
