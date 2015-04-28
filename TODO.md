@@ -1,13 +1,11 @@
 --------------
-If NOT pipeable then DONT allow piping
-
+Modify readline.js to fit our needs (READ AND UNDERSTAND THE CODE)
 
 rewrite tests
 config is outside commands file
 if matches take an argument, then use that to validate the input
 more if alot of commands
 1 Extra argument (called argument). The last ARGUMENT
-Modify readline.js to fit our needs (READ AND UNDERSTAND THE CODE)
 Make sure store is sane
 Make wf switch cli tree (as example2.js)
 pipe cmds options
@@ -35,3 +33,4 @@ PRIMARY tests
 Option color + replace marak with chalk (will be fixed when colors is updated)
 TEST Primary with different types
 Show group in help option
+If NOT pipeable then DONT allow piping

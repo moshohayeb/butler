@@ -1,4 +1,6 @@
 var dummy = function (context) { ; };
+var _ = require('lodash');
+
 
 module.exports = {
   possibleMsgs: 'Possible Completions:',
@@ -70,6 +72,15 @@ module.exports = {
               help: 'show minimum information',
               bool: true,
             },
+            {
+              name: 'count',
+              help: 'enter commad count number',
+              match: function(eth) {
+                var rv =  _.contains(['eth1', 'eth2', 'eth3'], eth);
+                return rv;
+              },
+              required: true
+            }
 
           ]
         },
