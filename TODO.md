@@ -1,5 +1,4 @@
 --------------
-Modify readline.js to fit our needs (READ AND UNDERSTAND THE CODE)
 
 rewrite tests
 config is outside commands file
@@ -34,3 +33,4 @@ Option color + replace marak with chalk (will be fixed when colors is updated)
 TEST Primary with different types
 Show group in help option
 If NOT pipeable then DONT allow piping
+Modify readline.js to fit our needs (READ AND UNDERSTAND THE CODE)

@@ -1,13 +1,13 @@
-var dummy = function (context) { ; };
+var dummy = function (context) {; }
 
 module.exports = {
   possibleMsg: 'Possible Completions:',
-  prompt:       '<SPACE-X-CLI>',
-  motd:         function () {
-    console.log('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
+  prompt: '<SPACE-X-CLI>',
+  motd: function () {
+    console.log('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green)
   },
 
-  appendGroup:   true,
+  appendGroup: true,
   appendDefault: true,
   colors: false,
 
@@ -15,19 +15,19 @@ module.exports = {
 
     // couple of errornous/incomplete commands
     {
-      Unused:         'useless value to me',
+      Unused: 'useless value to me',
       'space in key': 'should not affect the app',
-      name:           'backup',
-      help:           'backup system files',
-      run:            'invalid'
+      name: 'backup',
+      help: 'backup system files',
+      run: 'invalid'
     },
 
     {
       // this commmand should be ignored
       // because it has no name
       noname: 'this command has no name',
-      help:   'so it should not be treated as such',
-      'run':  {} // invalid run context
+      help: 'so it should not be treated as such',
+      'run': {} // invalid run context
     },
 
     {
@@ -39,44 +39,44 @@ module.exports = {
     },
 
     {
-      name:    'traceroute',
-      help:    { 'help cant be an object': 1 },
+      name: 'traceroute',
+      help: { 'help cant be an object': 1 },
       options: []
     },
 
     {
-      name:     'purge',
-      help:     'purge cached data in the machine',
+      name: 'purge',
+      help: 'purge cached data in the machine',
       commands: [
         {
           name: 'mac-address-table',
           help: 'flush mac-address-resolution information',
-          run:  dummy
+          run: dummy
         },
         {
           name: 'log',
           help: 'remove access log files',
-          run:  dummy
+          run: dummy
         }
       ]
     },
 
     {
-      name:     'show',
-      help:     'show system information',
+      name: 'show',
+      help: 'show system information',
       commands: [
         {
           name: 'mac-address-table',
           help: 'show mac address table',
-          run:  dummy
+          run: dummy
         },
         {
-          name:     'hardware',
-          help:     'show system hardware information',
+          name: 'hardware',
+          help: 'show system hardware information',
           commands: [
             {
-              name:     'hard-drive',
-              help:     'show info about the state of HD',
+              name: 'hard-drive',
+              help: 'show info about the state of HD',
               commands: [
                 {
                   name: 'fan',
@@ -97,7 +97,7 @@ module.exports = {
                 { name: null },
                 { name: 'pager' },
               ],
-              options:  [
+              options: [
                 {
                   name: 'OPT1',
                   help: 'gonna get ignored because commands are present'
@@ -112,7 +112,7 @@ module.exports = {
               name: 'cpu'
             },
             {
-              ignore_me_please:           213,
+              ignore_me_please: 213,
               because_i_dont_have_a_name: 'LOL'
             }
           ]
@@ -120,17 +120,17 @@ module.exports = {
         {
           name: 'clock',
           help: 'show system clock',
-          run:  dummy
+          run: dummy
         },
         {
-          name:    'ip',
-          help:    'show ipv4 information',
-          run:     dummy,
+          name: 'ip',
+          help: 'show ipv4 information',
+          run: dummy,
           options: [
             {
-              name:    'interfaces',
-              help:    'interface name',
-              match:   function () {
+              name: 'interfaces',
+              help: 'interface name',
+              match: function () {
                 return [
                   'ethernet', 'loopback', 'management', 'trunk', 've'
                 ]
@@ -146,15 +146,15 @@ module.exports = {
           ]
         },
         {
-          name:    'terminal',
-          help:    'show current terminal parameters',
+          name: 'terminal',
+          help: 'show current terminal parameters',
           options: [
             {
-              name:     'color',
-              help:     'colors to use when displaying results',
-              match:    {
-                red:     'rhe red color', blue: 1, green: 'green as a leaf',
-                yellow:  'yellow as the sun', cyan: 'this is a help message',
+              name: 'color',
+              help: 'colors to use when displaying results',
+              match: {
+                red: 'rhe red color', blue: 1, green: 'green as a leaf',
+                yellow: 'yellow as the sun', cyan: 'this is a help message',
                 magenta: null, 'white': undefined, 'black': 'who uses black'
               },
               multiple: true
@@ -164,26 +164,26 @@ module.exports = {
               help: 'the width of the terminal'
             }
           ],
-          run:     dummy
+          run: dummy
         },
         {
-          name:    'log',
-          help:    'show system log',
+          name: 'log',
+          help: 'show system log',
           options: [
             {
-              name:    'verbose',
-              help:    'show verbose log',
-              bool:    true,
+              name: 'verbose',
+              help: 'show verbose log',
+              bool: true,
               primary: true
             }
           ],
-          meta:    'pipeable',
-          run:     dummy
+          meta: 'pipeable',
+          run: dummy
         },
         {
           name: 'version',
           help: 'show cli version',
-          run:  dummy
+          run: dummy
         },
       ]
     },
@@ -191,42 +191,42 @@ module.exports = {
     {
       name: 'exit',
       help: 'exit from cli session',
-      run:  dummy
+      run: dummy
     },
 
     {
       name: 'reboot',
       help: 'reboot machine',
-      run:  dummy
+      run: dummy
     },
 
     {
-      name:    'ping',
-      help:    'send ICMP echo messages',
-      meta:    ['pipeable'],
-      run:     function(context){
-        console.log(context);
+      name: 'ping',
+      help: 'send ICMP echo messages',
+      meta: ['pipeable'],
+      run: function (context) {
+        console.log(context)
         this.setPrompt('HEHE>>>')
       },
       options: [
         {
-          name:   'hiddenOpt',
-          help:   'hidden, doesn\'t matter',
+          name: 'hiddenOpt',
+          help: "hidden, doesn't matter",
           hidden: true
         },
         {
-          name:     'host',
-          help:     'IP address or hostname of a remote system',
-          primary:  true,
+          name: 'host',
+          help: 'IP address or hostname of a remote system',
+          primary: true,
           required: true
-          //match:    /^\d+$/
+        // match:    /^\d+$/
         },
         {
-          name:      'ttl',
-          help:      'time to live',
+          name: 'ttl',
+          help: 'time to live',
           matchName: 'NUM<length1-5>',
-          match:     /^\d+$/,
-          default:   10
+          match: /^\d+$/,
+          default: 10
         },
         {
           name: 'size',
@@ -238,29 +238,29 @@ module.exports = {
           bool: true
         },
         {
-          name:  'timeout',
-          help:  'specify timeout interval',
+          name: 'timeout',
+          help: 'specify timeout interval',
           match: function () {
             return [1, 10, 30, 60]
           }
         },
         {
-          name:    'src-ip',
-          help:    'specify source address',
-          group:   'source',
+          name: 'src-ip',
+          help: 'specify source address',
+          group: 'source',
           default: '10.10.60.24'
         },
         {
-          name:  'interface',
-          help:  'specify on which interface to send',
+          name: 'interface',
+          help: 'specify on which interface to send',
           group: 'source',
           match: [{ name: 'eth0', help: 'localhost interface 127.0.0.1' }, 'eth1', 'eth2', 'eth3', 34, null]
         },
         {
-          name:  'fake',
-          help:  'send ping to fake host',
+          name: 'fake',
+          help: 'send ping to fake host',
           group: 'source',
-          bool:  true
+          bool: true
         }
       ]
     },
@@ -268,7 +268,7 @@ module.exports = {
     {
       name: 'ssh',
       help: 'open an ssh connection',
-      run:  dummy
+      run: dummy
     },
   ]
 }

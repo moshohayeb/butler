@@ -1,17 +1,17 @@
-var _      = require('lodash');
-var util   = require('util');
-var chai   = require('chai');
-var expect = chai.expect;
+var _ = require('lodash')
+var util = require('util')
+var chai = require('chai')
+var expect = chai.expect
 
-var compare = require('./helpers').compare;
+var compare = require('./helpers').compare
 require('blanket')({
   pattern: function (filename) {
-    return !/node_modules/.test(filename);
+    return !/node_modules/.test(filename)
   }
-});
+})
 
-var LineJS   = require('../lib/line.js')
-var Commands = require('./schema.js')['commands'];
+var LineJS = require('../lib/line.js')
+var Commands = require('./schema.js')['commands']
 
 var topLevelCommands = [
   'purge', 'show', 'exit',
@@ -19,67 +19,65 @@ var topLevelCommands = [
   'backup', 'health-stat', 'traceroute'
 ]
 
-var Line = _.partialRight(LineJS, Commands, { appendGroup: true });
-var KEYS = ['name', 'help', 'completeOn', 'primary'];
+var Line = _.partialRight(LineJS, Commands, { appendGroup: true })
+var KEYS = ['name', 'help', 'completeOn', 'primary']
 
 describe('@autocompletion', function () {
-  var name       = _.partialRight(_.pluck, 'name');
-  var help       = _.partialRight(_.pluck, 'help');
-  var completeOn = _.partialRight(_.pluck, 'completeOn');
-  var primary    = _.partialRight(_.pluck, 'primary');
-  var rv;
+  var name = _.partialRight(_.pluck, 'name')
+  var help = _.partialRight(_.pluck, 'help')
+  var completeOn = _.partialRight(_.pluck, 'completeOn')
+  var primary = _.partialRight(_.pluck, 'primary')
+  var rv
 
-  function is(names, type) {
-    var checker = 'is' + _.capitalize(type.toLowerCase());
+  function is (names, type) {
+    var checker = 'is' + _.capitalize(type.toLowerCase())
     if (!_.all(names, _[checker]))
       throw new Error(util.format('recieved a non-%s name (%s)', type, names))
   }
 
-  function hasLessThanOnePrimary(rv) {
-    var primaries = primary(rv);
+  function hasLessThanOnePrimary (rv) {
+    var primaries = primary(rv)
     if (_.countBy(primaries, function (b) {return b})['true'] > 1)
-      throw new Error('more than one primary is not permitted');
+      throw new Error('more than one primary is not permitted')
   }
 
-  function hasCorrectKeys(rv) {
+  function hasCorrectKeys (rv) {
     if (_.isArray(rv))
       return _.all(rv, function (v) { hasCorrectKeys(v) })
 
     if (!_.isObject(rv))
-      throw new Error('auto completion entry is not an object');
+      throw new Error('auto completion entry is not an object')
 
     if (!compare(_.keys(rv), KEYS))
       throw new Error(util.format(
-        'auto completion does not hold a valid entry (Got: %s)', _.keys(rv)));
+        'auto completion does not hold a valid entry (Got: %s)', _.keys(rv)))
   }
 
-  function processLine(line) {
-    var pline;
-    pline = Line(line);
-    pline.parse();
-    return pline.complete();
+  function processLine (line) {
+    var pline
+    pline = Line(line)
+    pline.parse()
+    return pline.complete()
   }
 
   beforeEach(function () {
-    rv = null;
+    rv = null
   })
-
 
   // called after each test case to make sure
   // that every returned object confirms to
   // what the API promises [ {OPT1} {OPT2} {OPT#} ]
   afterEach(function () {
-    hasCorrectKeys(rv);
-    hasLessThanOnePrimary(rv);
-    is(name(rv), 'string');
-    is(help(rv), 'string');
+    hasCorrectKeys(rv)
+    hasLessThanOnePrimary(rv)
+    is(name(rv), 'string')
+    is(help(rv), 'string')
 
   })
 
-
   describe('@lineParsing', function () {
     var lines = [
-      'some \tgarbage \bthat \ndoes\'t exist\r',
+      "some \tgarbage \bthat \ndoes't exist\r",
       '',
       'show hardware ',
       'show interface',
@@ -96,24 +94,22 @@ describe('@autocompletion', function () {
 
     _.each(lines, function (line) {
       it(util.format('should always return an array for value "%s"', line), function () {
-        rv = processLine(line);
-        expect(rv).to.be.an('array');
+        rv = processLine(line)
+        expect(rv).to.be.an('array')
       }) // it
     }) // each
 
   }) // lineparsing
 
   describe('@emptyLine', function () {
-
     it('should return the correct results', function () {
       rv = processLine('')
-      expect(name(rv)).to.have.members(topLevelCommands);
+      expect(name(rv)).to.have.members(topLevelCommands)
     })
 
   }) // describe
 
   describe('@invalidPath', function () {
-
     var lines = [
       'invalid path',
       'zig zag  ',
@@ -124,8 +120,8 @@ describe('@autocompletion', function () {
 
     _.each(lines, function (line) {
       it(util.format('should return an array of zero length on incorrect input: "%s"', line), function () {
-        rv = processLine(line);
-        expect(rv).to.be.an('array').and.be.empty;
+        rv = processLine(line)
+        expect(rv).to.be.an('array').and.be.empty
       }); // it
     }); // each
   }); // describe
@@ -138,27 +134,27 @@ describe('@autocompletion', function () {
       { line: 'show hardware ', expected: ['hard-drive', 'network-card', 'cpu'] },
       { line: 'show hardware hard-drive', expected: ['hard-drive'] },
       { line: 'show hardware hard-drive ', expected: ['fan', 'controller', 'errors', 'pager'] },
-    ];
+    ]
 
     _.each(cases, function (c) {
       it(util.format('should return correct result on deep traversal: "%s"', c.line), function () {
-        rv = processLine(c.line);
+        rv = processLine(c.line)
         expect(name(rv)).to.have.members(c.expected)
-      }); //it
+      }); // it
     }); // each
 
     it('should display <cr> on executable commands', function () {
-      rv = processLine('show version ');
-      expect(name(rv)).to.include('<cr>');
+      rv = processLine('show version ')
+      expect(name(rv)).to.include('<cr>')
     })
 
     it('should not display <cr> on incomplete commands', function () {
-      rv = processLine('show ');
-      expect(name(rv)).to.not.include('<cr>');
+      rv = processLine('show ')
+      expect(name(rv)).to.not.include('<cr>')
 
-      rv = processLine('show');
-      expect(name(rv)).to.not.include('<cr>');
-    });
+      rv = processLine('show')
+      expect(name(rv)).to.not.include('<cr>')
+    })
   }); // describe commands
 
   describe('@pipes', function () {
@@ -172,12 +168,12 @@ describe('@autocompletion', function () {
       { line: 'show hardware hard-drive errors', pipe: false },
       { line: 'show hardware hard-drive fan ', pipe: true },
       { line: 'show hardware hward-drive fan', pipe: false }
-    ];
+    ]
 
     _.each(cases, function (c) {
       it(util.format('should display/hide pipe properly on command "%s"', c.line), function () {
-        rv               = processLine(c.line);
-        var commandNames = name(rv);
+        rv = processLine(c.line)
+        var commandNames = name(rv)
         if (c.pipe)
           expect(commandNames).to.include('|')
         else
@@ -191,13 +187,13 @@ describe('@autocompletion', function () {
       { line: 's', expected: ['show', 'ssh'] },
       { line: 'show', expected: ['show'] },
       { line: 'ssh', expected: ['ssh'] }
-    ];
+    ]
 
     _.each(cases, function (c) {
       it(util.format('should return only results that start with partial: %s', c.line), function () {
-        rv = processLine(c.line);
-        expect(name(rv)).to.have.members(c.expected);
-      }); //it
+        rv = processLine(c.line)
+        expect(name(rv)).to.have.members(c.expected)
+      }); // it
     }); // each
   }); // describe partial
 
@@ -205,62 +201,62 @@ describe('@autocompletion', function () {
     describe('@hidegivenoptions', function () {
       var cases = [
         {
-          line:     'ping ',
+          line: 'ping ',
           expected: ['<host>', 'ttl', 'size', 'flood', 'timeout', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
         },
         {
-          line:     'ping t',
+          line: 'ping t',
           expected: ['timeout', 'ttl']
         },
         {
-          line:     'ping ttl',
+          line: 'ping ttl',
           expected: ['ttl']
         },
         {
-          line:     'ping ttl ',
+          line: 'ping ttl ',
           expected: ['NUM<length1-5>']
         },
         {
-          line:     'ping ttl xxx',
+          line: 'ping ttl xxx',
           expected: []
         },
         {
-          line:     'ping ttl xxx ',
+          line: 'ping ttl xxx ',
           expected: ['<host>', 'size', 'flood', 'timeout', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
         },
         {
-          line:     'ping ttl xxx ',
+          line: 'ping ttl xxx ',
           expected: ['<host>', 'size', 'flood', 'timeout', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
         },
         {
-          line:     'ping ttl xxx flood',
+          line: 'ping ttl xxx flood',
           expected: ['flood']
         },
         {
-          line:     'ping ttl xxx flood ',
+          line: 'ping ttl xxx flood ',
           expected: ['<host>', 'size', 'timeout', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
         },
         {
-          line:     'ping ttl xxx flood timeout yyy ',
+          line: 'ping ttl xxx flood timeout yyy ',
           expected: ['<host>', 'size', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
         },
         {
-          line:     'ping ttl qwr flood timeout qwr src-ip qwr size ttt 10.10.50.3',
+          line: 'ping ttl qwr flood timeout qwr src-ip qwr size ttt 10.10.50.3',
           expected: []
         },
         {
-          line:     'ping ttl qwr flood timeout qwr fake size ttt 10.10.50.3 ',
+          line: 'ping ttl qwr flood timeout qwr fake size ttt 10.10.50.3 ',
           expected: ['<cr>', '|']
         },
         {
-          line:     'ping ttl qwr flood timeout qwr interface eth3 size ttt 10.10.50.3 ',
+          line: 'ping ttl qwr flood timeout qwr interface eth3 size ttt 10.10.50.3 ',
           expected: ['<cr>', '|']
         }
-      ];
+      ]
 
       _.each(cases, function (c) {
         it(util.format('should hide the given options for command "%s" ', c.line), function () {
-          rv = processLine(c.line);
+          rv = processLine(c.line)
           expect(name(rv)).to.have.members(c.expected)
         }); // it
       }); // each
@@ -269,121 +265,121 @@ describe('@autocompletion', function () {
     describe('@optionModifiers', function () {
       describe('@boolean', function () {
         it('should be enough to specify the name', function () {
-          rv = processLine('ping flood ttl 33');
+          rv = processLine('ping flood ttl 33')
           expect(name(rv)).to.not.include('flood')
         }); // it
       }); // describe @boolean
 
       describe('@match', function () {
         it('should list the correct result when using OBJECT as match', function () {
-          rv = processLine('show terminal color ');
-          expect(name(rv)).to.have.members(['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan']);
+          rv = processLine('show terminal color ')
+          expect(name(rv)).to.have.members(['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan'])
         }); // it
 
         it('should list the correct result when using ARRAY as match', function () {
-          rv = processLine('ping interface ');
-          expect(name(rv)).to.have.members(['eth0', 'eth1', 'eth2', 'eth3', '34']);
+          rv = processLine('ping interface ')
+          expect(name(rv)).to.have.members(['eth0', 'eth1', 'eth2', 'eth3', '34'])
         }); // it
 
         it('should list the correct result when using CALLABLE as match', function () {
-          rv = processLine('ping timeout ');
-          expect(name(rv)).to.have.members(['10', '1', '30', '60']);
+          rv = processLine('ping timeout ')
+          expect(name(rv)).to.have.members(['10', '1', '30', '60'])
         }); // it
 
         it('should list the correct result when using REGEX as match', function () {
-          rv = processLine('ping ttl ');
-          expect(name(rv)).to.have.members(['NUM<length1-5>']);
-        });
+          rv = processLine('ping ttl ')
+          expect(name(rv)).to.have.members(['NUM<length1-5>'])
+        })
 
         it('should display <value> if non specified', function () {
-          rv = processLine('ping ttl 33 size ');
-          expect(name(rv)).to.have.members(['<value>']);
-        });
+          rv = processLine('ping ttl 33 size ')
+          expect(name(rv)).to.have.members(['<value>'])
+        })
       }); // describe @boolean
 
       describe('@hidden', function () {
         it('should handle hidden option properly', function () {
-          rv = processLine('ping ');
-          expect(name(rv)).to.not.include('hiddenOpt');
-        });
-      });
+          rv = processLine('ping ')
+          expect(name(rv)).to.not.include('hiddenOpt')
+        })
+      })
 
       describe('@multiple', function () {
         it('should return only the choices when non is provided', function () {
           rv = processLine('show terminal color ')
           expect(name(rv)).to.have.members(
-            ['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan']);
-        });
+            ['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan'])
+        })
 
         it('should return all the choices when at least one is provided', function () {
-          rv = processLine('show terminal color green ');
+          rv = processLine('show terminal color green ')
           expect(name(rv)).to.have.members(
-            ['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan', '<cr>', 'width']);
+            ['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan', '<cr>', 'width'])
         })
 
         it('indicate chosen options', function () {
-          rv        = processLine('show terminal color green blue ');
-          var green = _.find(rv, { name: 'green' });
-          var blue  = _.find(rv, { name: 'blue' });
-          var black = _.find(rv, { name: 'black' });
-          expect(green.help).to.have.a.string('selected');
-          expect(blue.help).to.have.a.string('selected');
-          expect(black.help).to.not.have.a.string('selected');
-        });
+          rv = processLine('show terminal color green blue ')
+          var green = _.find(rv, { name: 'green' })
+          var blue = _.find(rv, { name: 'blue' })
+          var black = _.find(rv, { name: 'black' })
+          expect(green.help).to.have.a.string('selected')
+          expect(blue.help).to.have.a.string('selected')
+          expect(black.help).to.not.have.a.string('selected')
+        })
       }); // describe (multiple)
 
       describe('@default', function () {
         it('should display default value in help when { appendGroup: true }', function () {
-          var l   = LineJS('ping ', Commands, { appendDefault: true });
-          l.parse();
-          rv      = l.complete();
-          var ttl = _.find(rv, { name: 'ttl' });
+          var l = LineJS('ping ', Commands, { appendDefault: true })
+          l.parse()
+          rv = l.complete()
+          var ttl = _.find(rv, { name: 'ttl' })
           expect(ttl.help).to.have.a.string('(default: 10)')
-        });
+        })
 
         it('should not display default value in help when { appendGroup: false }', function () {
-          var l   = LineJS('ping ', Commands, { appendDefault: false });
-          l.parse();
-          rv      = l.complete();
-          var ttl = _.find(rv, { name: 'ttl' });
+          var l = LineJS('ping ', Commands, { appendDefault: false })
+          l.parse()
+          rv = l.complete()
+          var ttl = _.find(rv, { name: 'ttl' })
           expect(ttl.help).to.not.have.a.string('(default: 10)')
-        });
-      });
+        })
+      })
 
       describe('@group', function () {
         it('should display group in help message of commands in the same group if {appendGroup: true}', function () {
-          var l       = LineJS('ping ', Commands, { appendGroup: true });
-          l.parse();
-          rv          = l.complete();
+          var l = LineJS('ping ', Commands, { appendGroup: true })
+          l.parse()
+          rv = l.complete()
           var objects = _.filter(rv, function (v) {
-            return _.contains(['src-ip', 'fake', 'interface'], v.name);
-          });
+            return _.contains(['src-ip', 'fake', 'interface'], v.name)
+          })
 
           _.each(objects, function (o) {
             expect(o.help).to.have.a.string('(group: source)')
-          });
-        });
+          })
+        })
 
         it('should hide all of the same group if one is specified', function () {
-          rv = processLine('ping src-ip 10.10.60.2 ');
-          expect(name(rv)).to.not.include('src-ip');
-          expect(name(rv)).to.not.include('fake');
-          expect(name(rv)).to.not.include('interface');
-        });
+          rv = processLine('ping src-ip 10.10.60.2 ')
+          expect(name(rv)).to.not.include('src-ip')
+          expect(name(rv)).to.not.include('fake')
+          expect(name(rv)).to.not.include('interface')
+        })
 
         it('should not show group help message if {appendGroup: false}', function () {
-          var l       = LineJS('ping ', Commands, { appendGroup: false });
-          l.parse();
-          rv          = l.complete();
+          var l = LineJS('ping ', Commands, { appendGroup: false })
+          l.parse()
+          rv = l.complete()
           var objects = _.filter(rv, function (v) {
-            return _.contains(['src-ip', 'fake', 'interface'], v.name);
-          });
+            return _.contains(['src-ip', 'fake', 'interface'], v.name)
+          })
 
           _.each(objects, function (o) {
             expect(o.help).to.not.have.a.string('(group: source)')
-          });
-        });
-      });
+          })
+        })
+      })
     }); // describe (optionModifier)
   }); // describe (option)
-});
+})

@@ -1,12 +1,11 @@
-var dummy = function (context) { ; };
-var _ = require('lodash');
-
+var dummy = function (context) {; }
+var _ = require('lodash')
 
 module.exports = {
   possibleMsgs: 'Possible Completions:',
-  prompt:       '<COMPANY-SWITCH>',
-  motd:         function () {
-    console.log('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green);
+  prompt: '<COMPANY-SWITCH>',
+  motd: function () {
+    console.log('Last login: Wed Mar 19 12:33:05 2014 from 10.10.12.20'.green)
   },
   appendDefault: true,
   appendGroup: true,
@@ -14,25 +13,25 @@ module.exports = {
   commands: [
 
     {
-      name:     'clear',
-      help:     'clear cached data in the machine',
+      name: 'clear',
+      help: 'clear cached data in the machine',
       commands: [
         {
           name: 'arp',
           help: 'clear address-resolution information',
-          run:  dummy
+          run: dummy
         },
         {
           name: 'terminal',
           help: 'clear the terminal screen',
-          run:  dummy
+          run: dummy
         }
       ]
     },
 
     {
-      name:     'show',
-      help:     'show system information',
+      name: 'show',
+      help: 'show system information',
       commands: [
         {
           name: 'ip'
@@ -41,31 +40,31 @@ module.exports = {
         {
           name: 'mac-address-table',
           help: 'show MAC address table',
-          run:  dummy
+          run: dummy
         },
         {
           name: 'configuration',
           help: 'show system configuration',
-          run:  dummy
+          run: dummy
         },
         {
           name: 'clock',
           help: 'show system clock',
-          run:  dummy
+          run: dummy
         },
         {
-          name:    'interface',
-          help:    'show information about available interfaces',
-          run:     function(context) {
-            console.log(context);
+          name: 'interface',
+          help: 'show information about available interfaces',
+          run: function (context) {
+            console.log(context)
           },
           options: [
             {
-              name:     'name',
-              help:     'enter interface name',
-              match:    function (value) { return value === 'YES'; },
+              name: 'name',
+              help: 'enter interface name',
+              match: function (value) { return value === 'YES'; },
               required: true,
-              primary:  true
+              primary: true
             },
             {
               name: 'brief',
@@ -75,9 +74,9 @@ module.exports = {
             {
               name: 'count',
               help: 'enter commad count number',
-              match: function(eth) {
-                var rv =  _.contains(['eth1', 'eth2', 'eth3'], eth);
-                return rv;
+              match: function (eth) {
+                var rv = _.contains(['eth1', 'eth2', 'eth3'], eth)
+                return rv
               },
               required: true
             }
@@ -87,49 +86,48 @@ module.exports = {
         {
           name: 'terminal',
           help: 'show current terminal parameters',
-          run:  dummy
+          run: dummy
         },
         {
           name: 'uptime',
           help: 'show system uptime',
-          run:  dummy
+          run: dummy
         },
         {
           name: 'version',
           help: 'show cli version',
-          run:  dummy
+          run: dummy
         },
       ]
     },
 
-
     {
       name: 'exit',
       help: 'exit from cli session',
-      run:  dummy
+      run: dummy
     },
 
     {
       name: 'reboot',
       help: 'reboot machine',
-      run:  dummy
+      run: dummy
     },
 
     {
-      name:    'ping',
-      help:    'send ICMP echo messages',
-      run:     dummy,
+      name: 'ping',
+      help: 'send ICMP echo messages',
+      run: dummy,
       options: [
         {
-          name:     'host',
-          help:     'IP address or hostname of a remote system',
-          primary:  true,
+          name: 'host',
+          help: 'IP address or hostname of a remote system',
+          primary: true,
           required: true,
-          //match:    /^\d+/
+        // match:    /^\d+/
         },
         {
-          name:    'ttl',
-          help:    'time to live',
+          name: 'ttl',
+          help: 'time to live',
           default: 10
         }
       ]
@@ -138,8 +136,8 @@ module.exports = {
     {
       name: 'flush',
       help: 'flush the system',
-      run: function(context) {
-        console.log(context);
+      run: function (context) {
+        console.log(context)
       },
       options: [
         {
@@ -156,11 +154,11 @@ module.exports = {
         {
           name: 'remote-host',
           help: 'where to push flushed data',
-          //match: [{name: 'OPT1', help: 'HELP FOR OPT1'}, {name: 'OPT2', help: 'HELP FOR OPT2'}],
-          //match: ['OPT1', 'OPT2'],
-          //match: function() { return ['FROMFUNCOPT1', 'FROMFUNCOPT2'] },
-          //match: function() { return [{name: 'FROMFUNCOPT1', help: 'just helping'}, {name: 'FROMFUNCOPT2', help:'oopsie'}] },
-          //match: null,
+          // match: [{name: 'OPT1', help: 'HELP FOR OPT1'}, {name: 'OPT2', help: 'HELP FOR OPT2'}],
+          // match: ['OPT1', 'OPT2'],
+          // match: function() { return ['FROMFUNCOPT1', 'FROMFUNCOPT2'] },
+          // match: function() { return [{name: 'FROMFUNCOPT1', help: 'just helping'}, {name: 'FROMFUNCOPT2', help:'oopsie'}] },
+          // match: null,
           match: new RegExp('(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(?:\\.(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])){3}'),
           matchName: '<NUMBER>',
           required: true
