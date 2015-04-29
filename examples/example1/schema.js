@@ -9,7 +9,7 @@ module.exports = {
   },
   appendDefault: true,
   appendGroup: true,
-  colors: true,
+  colors: false,
 
   commands: [
 
@@ -70,7 +70,7 @@ module.exports = {
             {
               name: 'brief',
               help: 'show minimum information',
-              bool: true,
+              bool: true
             },
             {
               name: 'count',
@@ -140,6 +140,7 @@ module.exports = {
       run: function (context) {
         this.print(JSON.stringify(context) + '\n')
       },
+      meta: ['pipeable'],
       options: [
         {
           name: 'time',
