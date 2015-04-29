@@ -1,5 +1,5 @@
-var butler = require('../../lib/butler'),
-  schema = require('./schema'),
-  cli = butler(schema)
+var Butler = require('../../lib/butler')
+var schema = require('./schema')
+var cli = new Butler(schema)
 
 cli.start()

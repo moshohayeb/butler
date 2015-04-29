@@ -4,7 +4,7 @@
   "description": "",
   "main": "./lib/butler.js",
   "dependencies": {
-    "colors": "^1.0.3",
+    "colors": "^1.1.0",
     "keypress": "^0.2.1",
     "lodash": "^3.3.1"
   },

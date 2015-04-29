@@ -1,4 +1,4 @@
-var dummy = function (context) {; }
+var dummy = function (context) { ; }
 var _ = require('lodash')
 
 module.exports = {
@@ -9,6 +9,7 @@ module.exports = {
   },
   appendDefault: true,
   appendGroup: true,
+  colors: true,
 
   commands: [
 
