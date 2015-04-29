@@ -138,7 +138,7 @@ module.exports = {
       name: 'flush',
       help: 'flush the system',
       run: function (context) {
-        console.log(context)
+        this.print(JSON.stringify(context) + '\n')
       },
       options: [
         {
@@ -150,7 +150,6 @@ module.exports = {
           help: 'interval to flush',
           matchName: '<STRING[1-60]>',
           required: true,
-          hidden: true
         },
         {
           name: 'remote-host',
