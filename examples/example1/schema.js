@@ -1,4 +1,5 @@
 var dummy = function (context) { ; }
+var fs = require('fs')
 var _ = require('lodash')
 
 module.exports = {
@@ -9,7 +10,7 @@ module.exports = {
   },
   appendDefault: true,
   appendGroup: true,
-  colors: false,
+  colors: true,
 
   commands: [
 
@@ -137,8 +138,9 @@ module.exports = {
     {
       name: 'flush',
       help: 'flush the system',
-      run: function (context) {
-        this.print(JSON.stringify(context) + '\n')
+      run: function (context, stream) {
+        var data = fs.readFileSync('./file.txt')
+        this.print(data.toString())
       },
       meta: ['pipeable'],
       options: [
