@@ -140,7 +140,9 @@ module.exports = {
       help: 'flush the system',
       run: function (context, stream) {
         var data = fs.readFileSync('./file.txt')
-        this.print(data.toString())
+        stream.write('Starting...'.green)
+        stream.write(data)
+        stream.end()
       },
       meta: ['pipeable'],
       options: [
