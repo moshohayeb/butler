@@ -1,5 +1,5 @@
-var butler = require('../../lib/butler'),
-  schema = require('./schema'),
-  cli = butler(schema)
+var clift  = require('../../lib/clift'),
+    schema = require('./schema'),
+    cli    = clift(schema)
 
 cli.start()
