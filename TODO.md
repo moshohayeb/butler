@@ -1,5 +1,4 @@
 --------------
-
 rewrite tests
 config is outside commands file
 if matches take an argument, then use that to validate the input
