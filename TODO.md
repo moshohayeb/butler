@@ -1,4 +1,5 @@
 --------------
+use cli-table for output formatting
 rewrite tests
 Ability to write part of the command (if not ambigous, sh arp -> show arp)
 
