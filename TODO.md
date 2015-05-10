@@ -1,13 +1,5 @@
 --------------
 rewrite tests
-config is outside commands file
-if matches take an argument, then use that to validate the input
-more if alot of commands
-1 Extra argument (called argument). The last ARGUMENT
-Make sure store is sane
-Make wf switch cli tree (as example2.js)
-pipe cmds options
-schema validator
 Ability to write part of the command (if not ambigous, sh arp -> show arp)
 
 the ability to dig deeper in the tree (as an option 'traversable')
@@ -33,3 +25,5 @@ TEST Primary with different types
 Show group in help option
 If NOT pipeable then DONT allow piping
 Modify readline.js to fit our needs (READ AND UNDERSTAND THE CODE)
+if matches take an argument, then use that to validate the input
+1 Extra argument (called argument). The last ARGUMENT
