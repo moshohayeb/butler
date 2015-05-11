@@ -143,17 +143,17 @@ describe('@autocompletion', function () {
       }); // it
     }); // each
 
-    it('should display <cr> on executable commands', function () {
+    it('should display <CR> on executable commands', function () {
       rv = processLine('show version ')
-      expect(name(rv)).to.include('<cr>')
+      expect(name(rv)).to.include('<CR>')
     })
 
-    it('should not display <cr> on incomplete commands', function () {
+    it('should not display <CR> on incomplete commands', function () {
       rv = processLine('show ')
-      expect(name(rv)).to.not.include('<cr>')
+      expect(name(rv)).to.not.include('<CR>')
 
       rv = processLine('show')
-      expect(name(rv)).to.not.include('<cr>')
+      expect(name(rv)).to.not.include('<CR>')
     })
   }); // describe commands
 
@@ -202,7 +202,7 @@ describe('@autocompletion', function () {
       var cases = [
         {
           line: 'ping ',
-          expected: ['<host>', 'ttl', 'size', 'flood', 'timeout', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
+          expected: ['<host>', 'ttl', 'size', 'flood', 'timeout', 'src-ip', 'interface', 'fake', '<CR>', '|', '<VALUE>']
         },
         {
           line: 'ping t',
@@ -222,11 +222,11 @@ describe('@autocompletion', function () {
         },
         {
           line: 'ping ttl xxx ',
-          expected: ['<host>', 'size', 'flood', 'timeout', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
+          expected: ['<host>', 'size', 'flood', 'timeout', 'src-ip', 'interface', 'fake', '<CR>', '|', '<VALUE>']
         },
         {
           line: 'ping ttl xxx ',
-          expected: ['<host>', 'size', 'flood', 'timeout', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
+          expected: ['<host>', 'size', 'flood', 'timeout', 'src-ip', 'interface', 'fake', '<CR>', '|', '<VALUE>']
         },
         {
           line: 'ping ttl xxx flood',
@@ -234,11 +234,11 @@ describe('@autocompletion', function () {
         },
         {
           line: 'ping ttl xxx flood ',
-          expected: ['<host>', 'size', 'timeout', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
+          expected: ['<host>', 'size', 'timeout', 'src-ip', 'interface', 'fake', '<CR>', '|', '<VALUE>']
         },
         {
           line: 'ping ttl xxx flood timeout yyy ',
-          expected: ['<host>', 'size', 'src-ip', 'interface', 'fake', '<cr>', '|', '<value>']
+          expected: ['<host>', 'size', 'src-ip', 'interface', 'fake', '<CR>', '|', '<VALUE>']
         },
         {
           line: 'ping ttl qwr flood timeout qwr src-ip qwr size ttt 10.10.50.3',
@@ -246,11 +246,11 @@ describe('@autocompletion', function () {
         },
         {
           line: 'ping ttl qwr flood timeout qwr fake size ttt 10.10.50.3 ',
-          expected: ['<cr>', '|']
+          expected: ['<CR>', '|']
         },
         {
           line: 'ping ttl qwr flood timeout qwr interface eth3 size ttt 10.10.50.3 ',
-          expected: ['<cr>', '|']
+          expected: ['<CR>', '|']
         }
       ]
 
@@ -291,9 +291,9 @@ describe('@autocompletion', function () {
           expect(name(rv)).to.have.members(['NUM<length1-5>'])
         })
 
-        it('should display <value> if non specified', function () {
+        it('should display <VALUE> if non specified', function () {
           rv = processLine('ping ttl 33 size ')
-          expect(name(rv)).to.have.members(['<value>'])
+          expect(name(rv)).to.have.members(['<VALUE>'])
         })
       }); // describe @boolean
 
@@ -314,7 +314,7 @@ describe('@autocompletion', function () {
         it('should return all the choices when at least one is provided', function () {
           rv = processLine('show terminal color green ')
           expect(name(rv)).to.have.members(
-            ['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan', '<cr>', 'width'])
+            ['red', 'blue', 'green', 'black', 'white', 'magenta', 'yellow', 'cyan', '<CR>', 'width'])
         })
 
         it('indicate chosen options', function () {
