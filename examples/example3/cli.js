@@ -26,8 +26,8 @@ var schema = {
       run:  function (stream, context) {
         var i
         var output = ''
-        for (i = 0; i < 1000000; i++)
-          output += 'WoW... ' + String(i) + '\n'
+        for (i = 0; i < 100; i++)
+          stream.write('WoW... ' + String(i) + '\n')
         stream.end(output + '\n', 'utf8')
       }
     }
