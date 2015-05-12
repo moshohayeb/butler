@@ -9,7 +9,7 @@ module.exports = {
 
   appendGroup: true,
   appendDefault: true,
-  colors: false,
+  colors: true,
 
   commands: [
 
