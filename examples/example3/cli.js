@@ -18,15 +18,15 @@ var schema = {
       name: 'ping',
       help: 'ping remote host',
       meta: ['pipeable'],
-      run: function (stream, context) {
-        var ping = child_process.spawn('ping', ['8.8.8.8'])
+      run2: function (stream, context) {
+        var ping = child_process.spawn('ping', ['192.168.100.1'])
         ping.stdout.pipe(stream)
         this.on('CTRL-C', function () { ping.kill() })
       },
-      run2:  function (stream, context) {
+      run:  function (stream, context) {
         var i
         var output = ''
-        for (i = 0; i < 10; i++)
+        for (i = 0; i < 1000000; i++)
           output += 'WoW... ' + String(i) + '\n'
         stream.end(output + '\n', 'utf8')
       }
