@@ -1,6 +1,6 @@
-var clift         = require('../../lib/clift')
-var child_process = require('child_process')
-
+var clift = require('../../lib/clift')
+var es    = require('event-stream')
+var spawn = require('child_process').spawn
 
 var schema = {
   prompt:   '> ',
@@ -9,7 +9,7 @@ var schema = {
     {
       name: 'exit',
       help: 'hello 2',
-      run: function () {
+      run:  function () {
         process.exit(0)
       }
 
@@ -19,9 +19,11 @@ var schema = {
       help: 'ping remote host',
       meta: ['pipeable'],
       run2: function (stream, context) {
-        var ping = child_process.spawn('ping', ['192.168.100.1'])
-        ping.stdout.pipe(stream)
-        this.on('CTRL-C', function () { ping.kill() })
+        //var proc = spawn('node', ['./print.js'])
+        var proc       = spawn('ping', ['-i', '1.1', '8.8.8.8'])
+        var procStream = es.merge(proc.stdout, proc.stderr)
+        procStream.pipe(stream)
+        this.on('SIGINT', function () { proc.kill('SIGINT') })
       },
       run:  function (stream, context) {
         var i
