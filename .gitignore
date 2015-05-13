@@ -3,3 +3,4 @@ node_modules
 coverage.html
 *.txt
 examples/ignore
+examples/example3/print.js
