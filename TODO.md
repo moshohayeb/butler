@@ -1,8 +1,8 @@
 --------------
+multi pipes
 one time init
 revise utility transform
 mid cursor behaviour
-use cli-table for output formatting
 rewrite tests
 Ability to write part of the command (if not ambigous, sh arp -> show arp)
 
@@ -32,3 +32,4 @@ Modify readline.js to fit our needs (READ AND UNDERSTAND THE CODE)
 if matches take an argument, then use that to validate the input
 1 Extra argument (called argument). The last ARGUMENT
 standardize requires
+use cli-table for output formatting
