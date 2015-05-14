@@ -12,7 +12,6 @@ var schema = {
       run:  function () {
         process.exit(0)
       }
-
     },
     {
       name: 'ping',
