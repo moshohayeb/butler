@@ -1,4 +1,5 @@
 --------------
+slugify names
 multi pipes
 one time init
 revise utility transform
