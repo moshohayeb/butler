@@ -1,5 +1,5 @@
 --------------
-slugify names
+when flexable, add an opt to indicate so
 multi pipes
 one time init
 revise utility transform
