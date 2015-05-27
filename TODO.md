@@ -1,4 +1,5 @@
 --------------
+hidden commands
 mutliple applies for non array values
 when flexable, add an opt to indicate so
 multi pipes
