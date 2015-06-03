@@ -1,11 +1,10 @@
 --------------
+mid cursor behaviour
 hidden commands
 mutliple applies for non array values
 when flexable, add an opt to indicate so
-multi pipes
 one time init
 revise utility transform
-mid cursor behaviour
 rewrite tests
 Ability to write part of the command (if not ambigous, sh arp -> show arp)
 
@@ -36,3 +35,4 @@ if matches take an argument, then use that to validate the input
 1 Extra argument (called argument). The last ARGUMENT
 standardize requires
 use cli-table for output formatting
+multi pipes
