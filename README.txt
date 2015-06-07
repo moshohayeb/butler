@@ -1,3 +1,0 @@
-CLI Generation library. Supports option autocompletion and more.
-
-WIP
