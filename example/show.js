@@ -1,43 +1,48 @@
 var run = require('./support').run
 
 module.exports = {
-  name: 'show',
-  help: 'show system information',
+  name:     'show',
+  help:     'show deployment information',
   commands: [
     {
-      name: 'heath',
-      help: 'show system health status',
-      run: run,
+      name:    'server',
+      help:    'show current servers status',
+      run:     run,
       options: [
         {
           name: 'verbose',
-          help: 'verbose output',
+          help: 'display verbose output',
           bool: true
         },
         {
-          name: 'components',
-          help: 'list of components to run check on',
-          match: ['hd', 'fan', 'cpu', 'memory', 'power'],
-          multiple: true
+          name:    'server',
+          help:    'server name (leave empty for all servers)',
+          primary: true,
+          match:   function () { return ['mx1', 'mx2', 'ec1', 'ec2'] },
         },
-        {
-          name: 'count',
-          help: 'run each test count times',
-          default: 3
-        }
       ]
     },
-    {
-      name: 'arp',
-      help: 'show address resolution table',
-      run: run
-    },
+
     {
       name: 'configuration',
-      help: 'show system configuration',
-      run: run
+      help: 'show deployment configuration',
+      run:  run
+    },
+
+    {
+      name: 'statistics',
+      help: 'show application statistics',
+      run:  run
+    },
+
+    {
+      name: 'health',
+      help: 'show servers health status',
+      run:  run
     }
 
+
   ]
+
 
 }
