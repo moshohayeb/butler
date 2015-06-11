@@ -1,6 +1,6 @@
 {
   "name": "clift",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cli generation library. It extends readline to provide autocompletion, options, pipes...etc",
   "main": "./lib/clift.js",
   "repository": {
