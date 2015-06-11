@@ -1,8 +1,12 @@
 {
   "name": "clift",
-  "version": "0.0.3",
-  "description": "CLI generation library. It extends Readline to provide autocompletion, options, pipes...etc",
+  "version": "0.1.0",
+  "description": "Cli generation library. It extends readline to provide autocompletion, options, pipes...etc",
   "main": "./lib/clift.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moshohayeb/clift"
+  },
   "dependencies": {
     "colors": "^1.1.0",
     "columnify": "^1.5.1",

@@ -1,5 +1,5 @@
 # Clift
-Clift is a library that enables you to rapidly create command line apps that support autocompletion, options, pipes...etc. It build on top of the node's readline library with some modification.
+Clift is a library to easily and rapidly create command line apps that support subcommands, autocompletion, options, pipes...etc. It build on top of the node's readline library with some modification.
 
 
 # Installation
@@ -27,7 +27,15 @@ The first argument to Clift constructor is an array of commands. Each command ob
     name: 'CommandName',
     help: 'CommandHelp',
     modifiers: { minOptsRequired: 0, pipe: true }
-    run: function(stream, context) { // function to invoke when executed },
+    run: function(stream, data) { 
+        // function to invoke when all is good,
+        // i.e. required options are present...etc
+        
+        // stream is a writable stream that must be ended
+        // after exection is finished
+        
+        // data is an object with options parsed
+    },
 
     // List of options, see below
     options: [],
@@ -36,9 +44,10 @@ The first argument to Clift constructor is an array of commands. Each command ob
     commands: []
 }
 ```
-A command object can either specifiy a list of options or a list of subcommands. Each subcommand is an instance of command object.
 
-#### name (required)
+A command object can either specifiy a list of options or a list of subcommands. Each subcommand is an instance of command.
+
+ - name (required)
 Name of the command.
 
 #### help (optional)
