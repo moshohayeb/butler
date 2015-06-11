@@ -1,3 +1,4 @@
+var fs = require('fs')
 var run = require('./support').run
 
 module.exports = {
@@ -26,7 +27,13 @@ module.exports = {
     {
       name: 'configuration',
       help: 'show deployment configuration',
-      run:  run
+      modifiers: { pipe: true },
+      run: function (stream, data) {
+        // fetch and process data
+
+        // end will be called automatically
+        fs.createReadStream('./snmpd.conf').pipe(stream)
+      }
     },
 
     {
@@ -37,7 +44,7 @@ module.exports = {
 
     {
       name: 'health',
-      help: 'show servers health status',
+      help: 'show servers health',
       run:  run
     }
 

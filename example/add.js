@@ -66,7 +66,7 @@ module.exports = {
     {
       name:     'strategy',
       help:     'add a deployment strategy',
-      required: true,
+      required: true
     }
 
   ]

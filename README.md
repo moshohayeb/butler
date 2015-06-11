@@ -26,7 +26,7 @@ The first argument to Clift constructor is an array of commands. Each command ob
 {
     name: 'CommandName',
     help: 'CommandHelp',
-    modifiers: { minOptsRequired: 0, pipeable: true }
+    modifiers: { minOptsRequired: 0, pipe: true }
     run: function(stream, context) { // function to invoke when executed },
 
     // List of options, see below
